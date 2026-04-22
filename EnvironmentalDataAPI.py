@@ -15,6 +15,7 @@ def getProductEnvironmentalData(data):
 
         return result
 
+"""
 # TESTA KODEN
 res = getProductEnvironmentalData("5000181028133")
 
@@ -25,3 +26,4 @@ if res:
     # Skriv ut agribalyse-datan snyggt (detta ersätter [Object] i konsolen)
     print("\n--- Detaljerad miljödata (Agribalyse) ---")
     print(json.dumps(res['agribalyse'], indent=2, ensure_ascii=False))
+"""
