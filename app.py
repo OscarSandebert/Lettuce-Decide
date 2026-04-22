@@ -20,4 +20,5 @@ if result is None:
     if result is None:
         print('Product could not be found in any database')
     else:
-        print(result['product']['product_name'])
+        print(result['product'].get('product_name', 'product name not found'))
+        print(result['product'].get('brands', 'brand name not found'))
