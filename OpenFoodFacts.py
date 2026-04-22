@@ -16,5 +16,5 @@ def getProduct(gtin):
         print("Error", response.status_code)
         return None
     
-pb = getProduct("737628064502")
-print(pb)
+#pb = getProduct("737628064502")
+#print(pb)

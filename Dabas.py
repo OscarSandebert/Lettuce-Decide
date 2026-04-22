@@ -20,6 +20,6 @@ def getProduct(gtin):
         print("Error", response.status_code)
         return None
     
-product = getProduct("07310867502214")
-print(product)
+#product = getProduct("07310867502214")
+#print(product)
 
