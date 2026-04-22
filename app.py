@@ -1,5 +1,6 @@
 import Dabas
 import OpenFoodFacts
+import EnvironmentalDataAPI
 
 def get_user_input():
     input_ok = False
@@ -22,3 +23,4 @@ if result is None:
     else:
         print(result['product'].get('product_name', 'product name not found'))
         print(result['product'].get('brands', 'brand name not found'))
+        print(EnvironmentalDataAPI.getProductEnvironmentalData(result))
