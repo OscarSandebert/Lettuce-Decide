@@ -14,11 +14,16 @@ def getProduct(gtin):
     
     response = requests.get(url, headers=headers)
 
-    if response.status_code == 200:
-        return response.json()
-    else:
+    if response.status_code != 200:
         print("Error", response.status_code)
         return None
+
+    data = response.json()
+    if data.get("status") == 0:
+        print("Error: Product not found")
+        return None
+
+    return data
     
 #product = getProduct("07310867502214")
 #print(product)
