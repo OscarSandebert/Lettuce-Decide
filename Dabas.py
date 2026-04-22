@@ -17,8 +17,9 @@ def getProduct(gtin):
     if response.status_code == 200:
         return response.json()
     else:
-        print("Error ", response.status_code)
+        print("Error", response.status_code)
         return None
     
 product = getProduct("07310867502214")
 print(product)
+
