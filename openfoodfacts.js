@@ -1,3 +1,4 @@
+//Run through node openfoodfacts.js, may need to install node
 
 function fetchProduct(barcode) {
     const url = `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`;
@@ -15,3 +16,4 @@ function fetchProduct(barcode) {
 }
 
 fetchProduct(7340131607376)
+
