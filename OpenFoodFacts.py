@@ -2,10 +2,10 @@ import requests
 
 def getProduct(gtin):
 
-    url = f'https://world.openfoodfacts.org/api/v0/product/{gtin}.json'
+    url = f'https://world.openfoodfacts.org/api/v2/product/{gtin}.json'
 
     headers = {
-        "User-Agent": "TestApp/1.0 (test@example.com)"
+        "User-Agent": "lettuce-decide (oscar.sandebert@gmail.com)"
     }
 
     response = requests.get(url, headers=headers)
