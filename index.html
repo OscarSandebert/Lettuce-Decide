@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamera</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 16px;
+      text-align: center;
+    }
+
+    video, canvas, img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      margin-top: 16px;
+    }
+
+    button, a {
+      display: inline-block;
+      margin: 12px 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #222;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ta en bild</h1>
+
+  <video id="video" autoplay playsinline></video>
+
+  <div>
+    <button id="takePhoto">Ta bild</button>
+  </div>
+
+  <canvas id="canvas" style="display: none;"></canvas>
+
+  <h2>Din bild</h2>
+  <img id="photo" alt="Tagen bild visas här" />
+
+  <div>
+    <a id="downloadLink" download="bild.png" style="display: none;">
+      Spara bild
+    </a>
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const photo = document.getElementById("photo");
+    const takePhotoButton = document.getElementById("takePhoto");
+    const downloadLink = document.getElementById("downloadLink");
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false
+        });
+
+        video.srcObject = stream;
+      } catch (error) {
+        alert("Kunde inte starta kameran. Kontrollera kamerabehörighet.");
+        console.error(error);
+      }
+    }
+
+    takePhotoButton.addEventListener("click", () => {
+      const context = canvas.getContext("2d");
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageDataUrl = canvas.toDataURL("image/png");
+
+      photo.src = imageDataUrl;
+      downloadLink.href = imageDataUrl;
+      downloadLink.style.display = "inline-block";
+    });
+
+    startCamera();
+  </script>
+</body>
+</html>
