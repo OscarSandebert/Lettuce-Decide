@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kamera</title>
+
   <style>
     body {
       font-family: sans-serif;
@@ -13,14 +14,17 @@
       text-align: center;
     }
 
-    video, canvas, img {
+    video,
+    canvas,
+    img {
       width: 100%;
       max-width: 400px;
       border-radius: 12px;
       margin-top: 16px;
     }
 
-    button, a {
+    button,
+    a {
       display: inline-block;
       margin: 12px 6px;
       padding: 10px 16px;
@@ -30,6 +34,7 @@
       color: white;
       text-decoration: none;
       cursor: pointer;
+      font-size: 16px;
     }
 
     a {
@@ -37,6 +42,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Ta en bild</h1>
 
@@ -52,7 +58,7 @@
   <img id="photo" alt="Tagen bild visas här" />
 
   <div>
-    <a id="downloadLink" download="bild.png" style="display: none;">
+    <a id="downloadLink" download="bild.jpg" style="display: none;">
       Spara bild
     </a>
   </div>
@@ -70,6 +76,12 @@
           video: {
             facingMode: {
               ideal: "environment"
+            },
+            width: {
+              ideal: 1920
+            },
+            height: {
+              ideal: 1080
             }
           },
           audio: false
@@ -90,10 +102,11 @@
 
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      const imageDataUrl = canvas.toDataURL("image/png");
+      const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
       photo.src = imageDataUrl;
       downloadLink.href = imageDataUrl;
+      downloadLink.download = "bild.jpg";
       downloadLink.style.display = "inline-block";
     });
 
