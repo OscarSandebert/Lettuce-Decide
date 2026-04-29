@@ -50,6 +50,7 @@
 
   <h2>Din bild</h2>
   <img id="photo" alt="Tagen bild visas här" />
+  <h2 id="result"></h2>
 
   <div>
     <a id="downloadLink" download="bild.png" style="display: none;">
@@ -57,12 +58,17 @@
     </a>
   </div>
 
-  <script>
+  <script type="module">
+     import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
+
+    const reader = new BrowserMultiFormatReader();
+
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const photo = document.getElementById("photo");
     const takePhotoButton = document.getElementById("takePhoto");
     const downloadLink = document.getElementById("downloadLink");
+    const resultElement = document.getElementById("result");
 
     async function startCamera() {
       try {
@@ -82,7 +88,7 @@
       }
     }
 
-    takePhotoButton.addEventListener("click", () => {
+    takePhotoButton.addEventListener("click", async () => {
       const context = canvas.getContext("2d");
 
       canvas.width = video.videoWidth;
@@ -95,6 +101,14 @@
       photo.src = imageDataUrl;
       downloadLink.href = imageDataUrl;
       downloadLink.style.display = "inline-block";
+
+      try {
+        const result = await reader.decodeFromImageUrl(imageDataUrl);
+        const barcode = result.getText();
+        resultElement.textContent = `Barcode: ${barcode}`;
+      } catch (err) {
+        resultElement.textContent = "No barcode found";
+      }
     });
 
     startCamera();
