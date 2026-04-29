@@ -31,6 +31,10 @@
       text-decoration: none;
       cursor: pointer;
     }
+
+    a {
+      background: #0a7;
+    }
   </style>
 </head>
 <body>
@@ -63,7 +67,11 @@
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: {
+            facingMode: {
+              ideal: "environment"
+            }
+          },
           audio: false
         });
 
