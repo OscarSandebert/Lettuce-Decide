@@ -24,3 +24,6 @@ if result is None:
         print(result['product'].get('product_name', 'product name not found'))
         print(result['product'].get('brands', 'brand name not found'))
         print(EnvironmentalDataAPI.getProductEnvironmentalData(result))
+else:
+    print(result.get('Hyllkantstext', 'product name not found'))
+    print(result['Varumarke'].get('Varumarke', 'brand name not found'))

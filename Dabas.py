@@ -1,18 +1,15 @@
-"""
-Funkar inte än, väntar på svar från Dabas med API key
-"""
-
-
+from dotenv import load_dotenv
+import os
 import requests
+
+load_dotenv()
+api_key = os.getenv("DABAS_API_KEY")
 
 def getProduct(gtin):
     url = f'https://api.dabas.com/DABASService/V2/article/gtin/{gtin}/json'
+    params = {"apikey": api_key}
     
-    headers = {
-        "Authorization": f'Bearer YOUR_API_KEY'
-    }
-    
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, params=params)
 
     if response.status_code != 200:
         print("Error", response.status_code)
