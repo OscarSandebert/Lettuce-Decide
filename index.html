@@ -56,7 +56,7 @@
 
   <h2>Din bild</h2>
   <img id="photo" alt="Tagen bild visas här" />
-  <h2 id="result"></h2>
+  <div id="result" style="margin-top: 16px; font-size: 18px;"></div>
 
   <div>
     <a id="downloadLink" download="bild.jpg" style="display: none;">
@@ -65,8 +65,9 @@
   </div>
 
   <script type="module">
-     import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
+    import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
 
+    const DABAS_API_KEY = "48e3fd63-556c-4ac1-8a5c-9cd8fe9bb681";
     const reader = new BrowserMultiFormatReader();
 
     const video = document.getElementById("video");
@@ -76,23 +77,67 @@
     const downloadLink = document.getElementById("downloadLink");
     const resultElement = document.getElementById("result");
 
+    async function lookupBarcode(barcode) {
+      resultElement.textContent = "Söker produkt...";
+
+      try {
+        const dabasRes = await fetch(
+          `https://api.dabas.com/DABASService/V2/article/gtin/${barcode}/json?apikey=${DABAS_API_KEY}`
+        );
+        if (dabasRes.ok) {
+          const d = await dabasRes.json();
+          if (d.status !== 0) {
+            const name = d.Hyllkantstext || "Okänt namn";
+            const brand = d.Varumarke?.Varumarke || "Okänt märke";
+            resultElement.innerHTML =
+              `<strong>${name}</strong><br>Märke: ${brand}<br><em>Källa: DABAS</em>`;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("DABAS misslyckades:", e);
+      }
+
+      try {
+        const offRes = await fetch(
+          `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`,
+          { headers: { "User-Agent": "lettuce-decide (oscar.sandebert@gmail.com)" } }
+        );
+        if (offRes.ok) {
+          const d = await offRes.json();
+          if (d.status !== 0) {
+            const p = d.product;
+            const name = p.product_name || "Okänt namn";
+            const brand = p.brands || "Okänt märke";
+            const grade = (p.ecoscore_grade || "?").toUpperCase();
+            const score = p.ecoscore_score ?? "–";
+            const category = p.ecoscore_data?.agribalyse?.name_en || "";
+            resultElement.innerHTML =
+              `<strong>${name}</strong><br>` +
+              `Märke: ${brand}<br>` +
+              `Eco-Score: ${grade} (${score})<br>` +
+              (category ? `Kategori: ${category}<br>` : "") +
+              `<em>Källa: OpenFoodFacts</em>`;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("OpenFoodFacts misslyckades:", e);
+      }
+
+      resultElement.textContent = "Produkt hittades inte";
+    }
+
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: {
-              ideal: "environment"
-            },
-            width: {
-              ideal: 1920
-            },
-            height: {
-              ideal: 1080
-            }
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
           },
           audio: false
         });
-
         video.srcObject = stream;
       } catch (error) {
         alert("Kunde inte starta kameran. Kontrollera kamerabehörighet.");
@@ -102,14 +147,11 @@
 
     takePhotoButton.addEventListener("click", async () => {
       const context = canvas.getContext("2d");
-
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
-
       photo.src = imageDataUrl;
       downloadLink.href = imageDataUrl;
       downloadLink.download = "bild.jpg";
@@ -118,9 +160,9 @@
       try {
         const result = await reader.decodeFromImageUrl(imageDataUrl);
         const barcode = result.getText();
-        resultElement.textContent = `Barcode: ${barcode}`;
+        await lookupBarcode(barcode);
       } catch (err) {
-        resultElement.textContent = "No barcode found";
+        resultElement.textContent = "Ingen streckkod hittades";
       }
     });
 
