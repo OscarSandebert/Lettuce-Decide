@@ -1,29 +1,41 @@
+from flask import Flask, jsonify, send_from_directory
 import Dabas
 import OpenFoodFacts
 import EnvironmentalDataAPI
 
-def get_user_input():
-    input_ok = False
-    while not input_ok:
-        u_input = input('Enter GTIN: ')
-        if u_input.isdigit():
-            input_ok = True
-        else:
-            print('GTIN must be a number')
-    return u_input
+app = Flask(__name__)
 
-GTIN_input = get_user_input()
 
-result = Dabas.getProduct(GTIN_input)
-if result is None:
-    print('Product not found in Dabas. Trying OpenFoodFacts')
-    result = OpenFoodFacts.getProduct(GTIN_input)
-    if result is None:
-        print('Product could not be found in any database')
-    else:
-        print(result['product'].get('product_name', 'product name not found'))
-        print(result['product'].get('brands', 'brand name not found'))
-        print(EnvironmentalDataAPI.getProductEnvironmentalData(result))
-else:
-    print(result.get('Hyllkantstext', 'product name not found'))
-    print(result['Varumarke'].get('Varumarke', 'brand name not found'))
+@app.route("/")
+def index():
+    return send_from_directory(".", "index.html")
+
+
+@app.route("/api/lookup/<barcode>")
+def lookup(barcode):
+    result = Dabas.getProduct(barcode)
+    if result is not None:
+        return jsonify({
+            "source": "DABAS",
+            "name": result.get("Hyllkantstext", "Okänt namn"),
+            "brand": result.get("Varumarke", {}).get("Varumarke", "Okänt märke"),
+        })
+
+    result = OpenFoodFacts.getProduct(barcode)
+    if result is not None:
+        env_data = EnvironmentalDataAPI.getProductEnvironmentalData(result)
+        product = result["product"]
+        return jsonify({
+            "source": "OpenFoodFacts",
+            "name": product.get("product_name", "Okänt namn"),
+            "brand": product.get("brands", "Okänt märke"),
+            "ecoscore_grade": env_data.get("ecoscore_grade", "?"),
+            "ecoscore_score": env_data.get("ecoscore_score"),
+            "category": env_data.get("agribalyse", {}).get("name_en", ""),
+        })
+
+    return jsonify({"error": "Produkt hittades inte"}), 404
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
