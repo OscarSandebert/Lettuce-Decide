@@ -56,7 +56,7 @@
 
   <h2>Din bild</h2>
   <img id="photo" alt="Tagen bild visas här" />
-  <h2 id="result"></h2>
+  <div id="result" style="margin-top: 16px; font-size: 18px;"></div>
 
   <div>
     <a id="downloadLink" download="bild.jpg" style="display: none;">
@@ -65,7 +65,7 @@
   </div>
 
   <script type="module">
-     import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
+    import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
 
     const reader = new BrowserMultiFormatReader();
 
@@ -76,23 +76,41 @@
     const downloadLink = document.getElementById("downloadLink");
     const resultElement = document.getElementById("result");
 
+    async function lookupBarcode(barcode) {
+      resultElement.textContent = "Söker produkt...";
+
+      const res = await fetch(`/api/lookup/${barcode}`);
+      if (!res.ok) {
+        resultElement.textContent = "Produkt hittades inte";
+        return;
+      }
+
+      const d = await res.json();
+      if (d.source === "DABAS") {
+        resultElement.innerHTML =
+          `<strong>${d.name}</strong><br>Märke: ${d.brand}<br><em>Källa: DABAS</em>`;
+      } else {
+        const grade = (d.ecoscore_grade || "?").toUpperCase();
+        const score = d.ecoscore_score ?? "–";
+        resultElement.innerHTML =
+          `<strong>${d.name}</strong><br>` +
+          `Märke: ${d.brand}<br>` +
+          `Eco-Score: ${grade} (${score})<br>` +
+          (d.category ? `Kategori: ${d.category}<br>` : "") +
+          `<em>Källa: OpenFoodFacts</em>`;
+      }
+    }
+
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: {
-              ideal: "environment"
-            },
-            width: {
-              ideal: 1920
-            },
-            height: {
-              ideal: 1080
-            }
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
           },
           audio: false
         });
-
         video.srcObject = stream;
       } catch (error) {
         alert("Kunde inte starta kameran. Kontrollera kamerabehörighet.");
@@ -102,14 +120,11 @@
 
     takePhotoButton.addEventListener("click", async () => {
       const context = canvas.getContext("2d");
-
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
-
       photo.src = imageDataUrl;
       downloadLink.href = imageDataUrl;
       downloadLink.download = "bild.jpg";
@@ -117,10 +132,9 @@
 
       try {
         const result = await reader.decodeFromImageUrl(imageDataUrl);
-        const barcode = result.getText();
-        resultElement.textContent = `Barcode: ${barcode}`;
+        await lookupBarcode(result.getText());
       } catch (err) {
-        resultElement.textContent = "No barcode found";
+        resultElement.textContent = "Ingen streckkod hittades";
       }
     });
 
