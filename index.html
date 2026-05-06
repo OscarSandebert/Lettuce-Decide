@@ -223,6 +223,7 @@
         openPopup(`
         <h2>Produkten hittades inte</h2>
         <p>Streckkoden finns inte i databasen.</p>
+        <p>Streckkod: ${barcode}</p>
       `);
         return;
       }
@@ -278,7 +279,12 @@
 
       try {
         const result = await reader.decodeFromImageUrl(imageDataUrl);
-        await lookupBarcode(result.getText());
+        let barcode = result.getText().trim();
+        if (barcode.length === 13) {
+          barcode = "0" + barcode
+        }
+
+        await lookupBarcode(barcode);
       } catch (err) {
         openPopup(`
           <h2>Ingen streckkod hittades</h2>

@@ -17,9 +17,9 @@ def demo():
 
 @app.route("/api/lookup/<barcode>")
 def lookup(barcode):
-    if len(barcode) == 12 and not barcode.startswith("0"):
+    if len(barcode) == 13 and not barcode.startswith("0"):
         barcode = "0" + barcode
-    elif len(barcode) == 13 and not barcode.startswith("0"):
+    elif len(barcode) == 14 and not barcode.startswith("0"):
         barcode = "0" + barcode[1:]
     
     dabas_result = Dabas.getProduct(barcode)
