@@ -40,6 +40,59 @@
     a {
       background: #0a7;
     }
+
+    /* Code for pop-up */
+    .popup-overlay {
+      display: none;
+
+      position: fixed;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      background: rgba(0, 0, 0, 0.6);
+
+      justify-content: center;
+      align-items: center;
+
+      z-index: 1000;
+    }
+
+    .popup-box {
+      background: white;
+
+      width: 90%;
+      max-width: 420px;
+
+      border-radius: 16px;
+
+      padding: 24px;
+
+      position: relative;
+
+      text-align: left;
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .close-popup {
+      position: absolute;
+
+      top: 10px;
+      right: 10px;
+
+      background: transparent;
+
+      color: black;
+
+      border: none;
+
+      font-size: 24px;
+
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -58,6 +111,21 @@
   <img id="photo" alt="Tagen bild visas här" />
   <div id="result" style="margin-top: 16px; font-size: 18px;"></div>
 
+  <!-- Code for pop-up -->
+  <div id="popupOverlay" class="popup-overlay">
+
+    <div class="popup-box">
+
+      <button id="closePopup" class="close-popup">
+        &times;
+      </button>
+
+      <div id="popupContent"></div>
+
+    </div>
+
+  </div>
+
   <div>
     <a id="downloadLink" download="bild.jpg" style="display: none;">
       Spara bild
@@ -75,29 +143,56 @@
     const takePhotoButton = document.getElementById("takePhoto");
     const downloadLink = document.getElementById("downloadLink");
     const resultElement = document.getElementById("result");
+    const popupOverlay = document.getElementById("popupOverlay"); ///Pop-up
+    const popupContent = document.getElementById("popupContent"); ///Pop-up
+    const closePopupButton = document.getElementById("closePopup");  ///Pop-up
+
+    function openPopup(html) {
+      popupContent.innerHTML = html;
+      popupOverlay.style.display = "flex";
+    }
+
+    function closePopup() {
+      popupOverlay.style.display = "none";
+    }
+
+    closePopupButton.addEventListener("click", closePopup);
+
+    popupOverlay.addEventListener("click", (e) => {
+      if (e.target === popupOverlay) {
+        closePopup();
+      }
+    });
 
     async function lookupBarcode(barcode) {
       resultElement.textContent = "Söker produkt...";
 
       const res = await fetch(`/api/lookup/${barcode}`);
       if (!res.ok) {
-        resultElement.textContent = "Produkt hittades inte";
+        openPopup(`
+        <h2>Produkten hittades inte</h2>
+        <p>Streckkoden finns inte i databasen.</p>
+      `);
         return;
       }
 
       const d = await res.json();
       if (d.source === "DABAS") {
-        resultElement.innerHTML =
-          `<strong>${d.name}</strong><br>Märke: ${d.brand}<br><em>Källa: DABAS</em>`;
+        openPopup(
+          `<h2>${d.name}</h2>
+          <p><strong>Märke:</strong> ${d.brand}</p>
+          <p><em>Källa: DABAS</em></p>`
+        );
       } else {
         const grade = (d.ecoscore_grade || "?").toUpperCase();
         const score = d.ecoscore_score ?? "–";
-        resultElement.innerHTML =
-          `<strong>${d.name}</strong><br>` +
-          `Märke: ${d.brand}<br>` +
-          `Eco-Score: ${grade} (${score})<br>` +
-          (d.category ? `Kategori: ${d.category}<br>` : "") +
-          `<em>Källa: OpenFoodFacts</em>`;
+        openPopup(
+          `<h2>${d.name}</h2>
+          <p><strong>Märke:</strong> ${d.brand}</p>
+          <p><strong>Eco-Score:</strong> ${grade} (${score})</p>
+          ${d.category ? `<p><strong>Kategori:</strong> ${d.category}</p>` : ""}
+          <p><em>Källa: OpenFoodFacts</em></p>`
+        );
       }
     }
 
@@ -134,8 +229,13 @@
         const result = await reader.decodeFromImageUrl(imageDataUrl);
         await lookupBarcode(result.getText());
       } catch (err) {
-        resultElement.textContent = "Ingen streckkod hittades";
+        openPopup(`
+          <h2>Ingen streckkod hittades</h2>
+          <p>Försök igen med bättre ljus eller tydligare fokus.</p>
+        `);
       }
+
+
     });
 
     startCamera();
