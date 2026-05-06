@@ -11,6 +11,10 @@ app = Flask(__name__)
 def index():
     return send_from_directory(".", "index.html")
 
+@app.route("/logo.png")
+def logo():
+    return send_from_directory(".", "Lettuce Decide logo.png")
+
 def demo():
     gtin = input("Enter GTIN: ")
     print(lookup(gtin))
