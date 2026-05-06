@@ -13,6 +13,8 @@ def index():
 
 @app.route("/api/lookup/<barcode>")
 def lookup(barcode):
+    if barcode.length == 12 and not barcode.startswith("0"):
+        barcode = "0" + barcode
     result = Dabas.getProduct(barcode)
     if result is not None:
         return jsonify({
