@@ -1,6 +1,7 @@
 import Dabas
 import OpenFoodFacts
 import EnvironmentalDataAPI
+import spellchecker
 
 def get_user_input():
     input_ok = False
@@ -23,7 +24,13 @@ if result is None:
     else:
         print(result['product'].get('product_name', 'product name not found'))
         print(result['product'].get('brands', 'brand name not found'))
+        raw_ingredients = result['product'].get('ingredients_text', 'ingredients not found')
+        ingredients = spellchecker.correct_ingredient(raw_ingredients)
+        print(ingredients)
         print(EnvironmentalDataAPI.getProductEnvironmentalData(result))
 else:
+    raw_ingredients = result.get('Ingrediensforteckning', 'ingredients not found')
+    ingredients = spellchecker.correct_ingredient(raw_ingredients)
+    print(ingredients)
     print(result.get('Hyllkantstext', 'product name not found'))
     print(result['Varumarke'].get('Varumarke', 'brand name not found'))
