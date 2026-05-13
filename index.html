@@ -258,6 +258,11 @@
       background: transparent;
     }
 
+    .favorite-btn.active {
+      background: #d62828;
+      color: white;
+    }
+
     @media (min-width: 760px) {
       body {
         padding-top: 34px;
@@ -375,9 +380,13 @@
       }
       const button = document.querySelector(".favorite-btn");
       if (button) {
-          button.innerHTML = isFavorite(barcode)
-              ? "❤️ Favorite"
-              : "🤍 Favorite";
+          if (isFavorite(barcode)) {
+              button.innerHTML = "❤️ Favorite";
+              button.classList.add("active");
+          } else {
+              button.innerHTML = "🤍 Favorite";
+              button.classList.remove("active");
+          }
       }
     }
 
