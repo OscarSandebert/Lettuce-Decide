@@ -121,7 +121,7 @@
 
     button:hover,
     a:hover {
-      background: var(--green-dark);
+      background: var(--green);
     }
 
     #takePhoto {
@@ -276,6 +276,20 @@
         font-size: 36px;
       }
     }
+
+    .popup-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .share-btn {
+        background: var(--surface-soft) !important;
+        color: var(--green-dark) !important;
+        border: 1px solid var(--border) !important;
+        box-shadow: none !important;
+        flex: 1;
+      }
   </style>
 </head>
 
@@ -402,6 +416,27 @@
 
       }
     }
+    window.toggleFavorite = toggleFavorite;
+
+    async function shareProduct(name, brand) {
+      const shareData = {
+        title: name,
+        text: `Dela produkten: ${name} från ${brand}`,
+        url: window.location.href,
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+          alert("Delning stöds inte i denna webbläsare.");
+        }
+      } catch (err) {
+        console.log("Delning avbröts");
+      }
+    }
+
+    window.shareProduct = shareProduct;
 
     async function attachFavoriteButton(barcode) {
       const favoriteButton = document.querySelector(".favorite-btn");
@@ -421,59 +456,66 @@
     }
 
     async function lookupBarcode(barcode) {
-      resultElement.textContent = "Soker produkt...";      
+      resultElement.textContent = "Söker produkt...";      
 
       const res = await fetch(`/api/lookup/${barcode}`);
       if (!res.ok) {
-        openPopup(`
-        <h2>Produkten hittades inte</h2>
-        <p>Streckkoden finns inte i databasen.</p>
-        <p>Streckkod: ${barcode}</p>
-      `);
+        openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
         return;
       }
 
       const d = await res.json();
-      if (d.source === "DABAS") {
-        const favoriteIcon =
-          await isFavorite(barcode)
-            ? "❤️"
-            : "🤍";
-        openPopup(`
-          <h2>${d.name}</h2>
-          <p><strong>Märke:</strong> ${d.brand}</p>
-          <p><em>Kalla: DABAS</em></p>
-          <button class="favorite-btn"
+
+      const favoriteIcon =
+        await isFavorite(barcode)
+          ? "❤️"
+          : "🤍";
+
+      const ecoScoreHtml =
+        d.source !== "DABAS"
+          ? `
+            <p>
+              <strong>Eco-Score:</strong>
+              ${(d.ecoscore_grade || "?").toUpperCase()}
+              (${d.ecoscore_score ?? "-"})
+            </p>
+            ${d.category
+              ? `<p><strong>Kategori:</strong> ${d.category}</p>`
+              : ""}
+          `
+          : "";
+
+      openPopup(`
+        <h2>${d.name}</h2>
+
+        <p><strong>Märke:</strong> ${d.brand}</p>
+
+        ${ecoScoreHtml}
+
+        <p><em>Källa: ${d.source}</em></p>
+
+        <div class="popup-actions">
+
+          <button
+            class="favorite-btn"
             data-barcode="${barcode}">
             ${favoriteIcon} Favorite
           </button>
-          `
-        );
-        attachFavoriteButton(barcode);
-      } else {
-        const grade = (d.ecoscore_grade || "?").toUpperCase();
-        const score = d.ecoscore_score ?? "-";
-        const favoriteIcon =
-          await isFavorite(barcode)
-            ? "❤️"
-            : "🤍";
-        openPopup(
-          `<h2>${d.name}</h2>
-          <p><strong>Märke:</strong> ${d.brand}</p>
-          <p><strong>Eco-Score:</strong> ${grade} (${score})</p>
-          ${d.category ? `<p><strong>Kategori:</strong> ${d.category}</p>` : ""}
-          <p><em>Kalla: OpenFoodFacts</em></p>
-          <button class="favorite-btn"
-            data-barcode="${barcode}">
-            ${favoriteIcon} Favorite
+
+          <button
+            class="share-btn"
+            onclick="shareProduct(
+              '${d.name.replace(/'/g, "\\'")}',
+              '${d.brand.replace(/'/g, "\\'")}'
+            )">
+            📤 Dela
           </button>
-          `
-        );
-        attachFavoriteButton(barcode);
-     
-        }
-        
-      }
+
+        </div>
+      `);
+
+      attachFavoriteButton(barcode);
+    }
 
     async function startCamera() {
       try {
