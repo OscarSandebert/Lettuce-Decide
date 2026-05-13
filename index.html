@@ -366,41 +366,54 @@
     });
 
     /* Favorite-knapp grejer*/
-    function addFavorite(barcode) {
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      if (!favorites.includes(barcode)) {
-          favorites.push(barcode);
-      }
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+    async function addFavorite(barcode) {
+      await fetch("/api/favorites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ barcode })
+      });
     }
 
-    function removeFavorite(barcode) {
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      favorites = favorites.filter(item => item !== barcode);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+    async function removeFavorite(barcode) {
+      await fetch(`/api/favorites/${barcode}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
     }
 
-    function isFavorite(barcode) {
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    async function isFavorite(barcode) {
+      const res = await fetch("/api/favorites", {
+        credentials: "include"
+      });
+
+      const favorites = await res.json();
 
       return favorites.includes(barcode);
     }
 
-    function toggleFavorite(barcode) {
-      if (isFavorite(barcode)) {
-          removeFavorite(barcode);
+    async function toggleFavorite(barcode, button) {
+
+      const currentlyFavorite = await isFavorite(barcode);
+
+      if (currentlyFavorite) {
+        await removeFavorite(barcode);
       } else {
-          addFavorite(barcode);
+        await addFavorite(barcode);
       }
-      const button = document.querySelector(".favorite-btn");
+
       if (button) {
-          if (isFavorite(barcode)) {
-              button.innerHTML = "❤️ Favorite";
-              button.classList.add("active");
-          } else {
-              button.innerHTML = "🤍 Favorite";
-              button.classList.remove("active");
-          }
+
+        if (!currentlyFavorite) {
+          button.innerHTML = "❤️ Favorite";
+          button.classList.add("active");
+        } else {
+          button.innerHTML = "🤍 Favorite";
+          button.classList.remove("active");
+        }
+
       }
     }
     window.toggleFavorite = toggleFavorite;
@@ -425,6 +438,23 @@
 
     window.shareProduct = shareProduct;
 
+    async function attachFavoriteButton(barcode) {
+      const favoriteButton = document.querySelector(".favorite-btn");
+      favoriteButton.addEventListener("click", async () => {
+        const res = await fetch("/api/me", {
+          credentials: "include"
+        });
+        if (!res.ok) {
+          openPopup(`
+            <h2>Logga in</h2>
+            <p>Du måste logga in för att spara produkter.</p>
+          `);
+          return;
+        }
+        await toggleFavorite(barcode, favoriteButton);
+      });
+    }
+
     async function lookupBarcode(barcode) {
       resultElement.textContent = "Söker produkt...";      
 
@@ -435,24 +465,56 @@
       }
 
       const d = await res.json();
-      const favoriteIcon = isFavorite(barcode) ? "❤️" : "🤍";
+
+      const favoriteIcon =
+        await isFavorite(barcode)
+          ? "❤️"
+          : "🤍";
+
+      const ecoScoreHtml =
+        d.source !== "DABAS"
+          ? `
+            <p>
+              <strong>Eco-Score:</strong>
+              ${(d.ecoscore_grade || "?").toUpperCase()}
+              (${d.ecoscore_score ?? "-"})
+            </p>
+            ${d.category
+              ? `<p><strong>Kategori:</strong> ${d.category}</p>`
+              : ""}
+          `
+          : "";
 
       openPopup(`
         <h2>${d.name}</h2>
+
         <p><strong>Märke:</strong> ${d.brand}</p>
-        ${d.source !== "DABAS" ? `<p><strong>Eco-Score:</strong> ${d.ecoscore_grade?.toUpperCase() || "?"}</p>` : ""}
+
+        ${ecoScoreHtml}
+
         <p><em>Källa: ${d.source}</em></p>
-        
+
         <div class="popup-actions">
-          <button class="favorite-btn" onclick="toggleFavorite('${barcode}')">
+
+          <button
+            class="favorite-btn"
+            data-barcode="${barcode}">
             ${favoriteIcon} Favorite
           </button>
-          
-          <button class="share-btn" onclick="shareProduct('${d.name.replace(/'/g, "\\'")}', '${d.brand.replace(/'/g, "\\'")}')">
+
+          <button
+            class="share-btn"
+            onclick="shareProduct(
+              '${d.name.replace(/'/g, "\\'")}',
+              '${d.brand.replace(/'/g, "\\'")}'
+            )">
             📤 Dela
           </button>
+
         </div>
       `);
+
+      attachFavoriteButton(barcode);
     }
 
     async function startCamera() {
