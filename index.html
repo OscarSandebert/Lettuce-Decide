@@ -466,10 +466,15 @@
 
       const d = await res.json();
 
-      const favoriteIcon =
-        await isFavorite(barcode)
-          ? "❤️"
-          : "🤍";
+      let favoriteIcon = "🤍";
+      try {
+        favoriteIcon =
+          await isFavorite(barcode)
+            ? "❤️"
+            : "🤍";
+      } catch (err) {
+        console.error(err);
+      }
 
       const ecoScoreHtml =
         d.source !== "DABAS"
