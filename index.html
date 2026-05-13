@@ -329,6 +329,7 @@
     const closePopupButton = document.getElementById("closePopup");  ///Pop-up
 
     scanAgainButton.style.display = "none";
+    let doneScanning = false;
 
     function openPopup(html) {
       popupContent.innerHTML = html;
@@ -526,8 +527,6 @@
     }
 
     async function startScanning() {
-      scanAgainButton.style.display = "none";
-      video.classList.remove("success");
       resultElement.textContent = "Rikta kameran mot en streckkod...";
 
       await video.play();
@@ -543,7 +542,9 @@
         },
         video,
         async (result, error) => {
-          if (!result) return;
+          if (!result || doneScanning) return;
+
+          doneScanning = true;
 
           let barcode = result.getText().trim();
           await lookupBarcode(barcode);
@@ -552,7 +553,12 @@
       )
     }
 
-    scanAgainButton.addEventListener("click", startScanning)
+    scanAgainButton.addEventListener("click", () => {
+      doneScanning = false;
+      scanAgainButton.style.display = "none";
+      resultElement.textContent = "Rikta kameran mot en streckkod...";
+      video.classList.remove("success");
+    })
 
     await startCamera();
     await startScanning();
