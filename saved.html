@@ -91,11 +91,77 @@
     .scan-button span {
       font-size: 28px;
     }
+
+    .product-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
   </style>
 </head>
 <body>
-    <h1>Under Uppbyggnad</h1>
-    <p>Här visas sparade produkter senare.</p>
+    <h1>Sparade Produkter</h1>
+    <div id="favoritesContainer"></div>
+
+  <script>
+  const container =
+      document.getElementById("favoritesContainer");
+
+  const favorites =
+      JSON.parse(localStorage.getItem("favorites")) || [];
+
+  async function loadFavorites() {
+      if (favorites.length === 0) {
+          container.innerHTML =
+              "<p>Inga sparade produkter.</p>";
+          return;
+      }
+      for (const barcode of favorites) {
+          try {
+              const res = await fetch(
+                  `/api/lookup/${barcode}`
+              );
+              if (!res.ok) {
+                console.error(`Could not load ${barcode}`);
+                continue;
+              }
+              const product = await res.json();
+              const card = document.createElement("div");
+              card.className = "product-card";
+              card.innerHTML = `
+                  <h2>${product.name}</h2>
+                  <p>${product.brand}</p>
+                  <p>Streckkod: ${barcode}</p>
+                  <button onclick="removeFavorite('${barcode}')">
+                    Ta bort
+                  </button>
+              `;
+              container.appendChild(card);
+          } catch (err) {
+              console.error(err);
+          }
+      }
+  }
+  loadFavorites();
+
+  function removeFavorite(barcode) {
+
+    let favorites =
+        JSON.parse(localStorage.getItem("favorites")) || [];
+
+    favorites =
+        favorites.filter(item => item !== barcode);
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+    location.reload();
+  }
+  </script>
 
   <!-- Bottom navigation -->
 
