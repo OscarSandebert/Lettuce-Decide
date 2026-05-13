@@ -88,9 +88,15 @@
       display: block;
       width: 100%;
       aspect-ratio: 4 / 3;
+      max-height: calc(100vh - 260px);
       border-radius: 16px;
       background: #050806;
       object-fit: cover;
+    }
+
+    video.success {
+      border: 4px solid var(--green-light);
+      box-shadow: 0 0 20px var(--green-light);
     }
 
     .actions {
@@ -437,9 +443,11 @@
       const res = await fetch(`/api/lookup/${barcode}`);
       if (!res.ok) {
         openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+        resultElement.textContent = null;
         return;
       }
 
+      video.classList.add("success")
       const d = await res.json();
 
       let favoriteIcon = "🤍";
@@ -495,6 +503,8 @@
         </div>
       `);
 
+      resultElement.textContent = null;
+
       attachFavoriteButton(barcode);
     }
 
@@ -517,7 +527,8 @@
 
     async function startScanning() {
       scanAgainButton.style.display = "none";
-      resultElement.textContent = "Rika kameran mot en streckkod...";
+      video.classList.remove("success");
+      resultElement.textContent = "Rikta kameran mot en streckkod...";
 
       await video.play();
 
@@ -541,9 +552,11 @@
       )
     }
 
+    scanAgainButton.addEventListener("click", startScanning)
+
     await startCamera();
     await startScanning();
-    
+
   </script>
 
   <nav class="bottom-nav">
