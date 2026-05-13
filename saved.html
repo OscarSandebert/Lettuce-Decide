@@ -163,26 +163,38 @@
   }
   </script>
 
+    <div id="userBar" style="margin-top:20px;"></div>
+
   <!-- Bottom navigation -->
 
   <nav class="bottom-nav">
 
-    <a href="index.html" class="nav-item">
+    <a href="/" class="nav-item">
       <span>🏠</span>
       <small>Hem</small>
     </a>
 
-    <a href="saved.html" class="nav-item active">
+    <a href="/saved" class="nav-item active">
       <span>❤️</span>
       <small>Sparat</small>
     </a>
 
-    <a href="info.html" class="nav-item">
+    <a href="/info" class="nav-item">
       <span>ℹ️</span>
       <small>Info</small>
 
     </a>
 
   </nav>
+
+  <script>
+    fetch("/api/me").then(r => r.json()).then(d => {
+      if (d.authenticated) {
+        document.getElementById("userBar").innerHTML =
+          `<p>Inloggad som <strong>${d.user.email}</strong></p>
+           <a href="/logout">Logga ut</a>`;
+      }
+    });
+  </script>
 </body>
 </html>
