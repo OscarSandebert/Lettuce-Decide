@@ -8,6 +8,7 @@ import Dabas
 import OpenFoodFacts
 import EnvironmentalDataAPI
 import cleansing
+import lookupIngredients
 
 load_dotenv()
 
@@ -113,40 +114,51 @@ def lookup(barcode):
         barcode = "0" + barcode[1:]
     
     dabas_result = Dabas.getProduct(barcode)
-    if dabas_result:
-        name = dabas_result.get("Hyllkantstext", "Okänt namn")
-        brand = dabas_result.get("Varumarke", {}).get("Varumarke", "Okänt märke")
-        raw_ingredients = dabas_result.get("Ingrediensforteckning", "Okända ingredienser")
-        ingredients = cleansing.correct_ingredient(raw_ingredients)
-        return jsonify({
-            "source": "DABAS",
-            "name": name,
-            "brand": brand,
-            "raw_ingredients": raw_ingredients,
-            "ingredients": ingredients
-        })
-
     off_result = OpenFoodFacts.getProduct(barcode)
+
+    data = {}
+
+    if not dabas_result and not off_result:
+        return jsonify({"error": "Produkt hittades inte"}), 404
+
+    if dabas_result:
+        data["name"] = dabas_result.get("Hyllkantstext", "Okänt namn")
+        data["brand"] = dabas_result.get("Varumarke", {}).get("Varumarke", "Okänt märke")
+        data["raw_ingredients"] = dabas_result.get("Ingrediensforteckning", "Okända ingredienser")
+        data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+        data["source"] = "DABAS"
+
     if off_result:
         env_data = EnvironmentalDataAPI.getProductEnvironmentalData(off_result)
         product = off_result["product"]
-        name = product.get("product_name", "Okänt namn")
-        brand = product.get("brands", "Okänt märke")
-        raw_ingredients = product.get("ingredients_text", "Okända ingredienser")
-        ingredients = cleansing.correct_ingredient(raw_ingredients)
-        ecoscore_grade = env_data.get("ecoscore_grade", "?")
-        ecoscore_score = env_data.get("ecoscore_score")
-        category = env_data.get("agribalyse", {}).get("name_en", "?")
-        return jsonify({
-            "source": "OpenFoodFacts",
-            "name": name,
-            "brand": brand,
-            "ecoscore_grade": ecoscore_grade,
-            "ecoscore_score": ecoscore_score,
-            "category": category
-        })
+        
+        data["ecoscore_grade"] = env_data.get("ecoscore_grade", "?")
+        data["ecoscore_score"] = env_data.get("ecoscore_score", "?")
+        data["category"] = env_data.get("agribalyse", {}).get("name_en", "?")
+        data["source"] = "DABAS + OpenFoodFacts"
 
-    return jsonify({"error": "Produkt hittades inte"}), 404
+        if not dabas_result:
+            data["source"] = "OpenFoodFacts"
+            data["name"] = product.get("product_name", "Okänt namn")
+            data["brand"] = product.get("brands", "Okänt märke")
+            data["raw_ingredients"] = product.get("ingredients_text", "Okända ingredienser")
+            data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+
+    warnings = lookupIngredients.match_ingredients(data["ingredients"])
+    for warning in warnings:
+        msg = f"{warning.get("standard_name")}: {warning.get("risk_reason")}\n"
+        data.setdefault("warnings", []).append(msg)
+
+    return jsonify({
+        "source": data.get("source", "Unknown"),
+        "name": data.get("name", "Unknown"),
+        "ingredients": data.get("ingredients", "Unknown"),
+        "brand": data.get("brand", "Unknown"),
+        "ecoscore_grade": data.get("ecoscore_grade", "Unknown"),
+        "ecoscore_score": data.get("ecoscore_score", "Unknown"),
+        "category": data.get("category", "Unknown"),
+        "warnings": data.get("warnings", [])
+    })
 
 @app.route("/api/favorites")
 def get_favorites():

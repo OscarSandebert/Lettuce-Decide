@@ -1,283 +1,283 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sv">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lettuce Decide</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lettuce Decide</title>
 
-  <style>
-    :root {
-      --bg: #f4f8ef;
-      --surface: #ffffff;
-      --surface-soft: #edf5e7;
-      --text: #0f3321;
-      --muted: #657469;
-      --green: #244f2d;
-      --green-light: #6da536;
-      --green-dark: #092819;
-      --border: #dbe7d4;
-      --shadow: 0 12px 32px rgba(9, 40, 25, 0.12);
-    }
+    <style>
+      :root {
+        --bg: #f4f8ef;
+        --surface: #ffffff;
+        --surface-soft: #edf5e7;
+        --text: #0f3321;
+        --muted: #657469;
+        --green: #244f2d;
+        --green-light: #6da536;
+        --green-dark: #092819;
+        --border: #dbe7d4;
+        --shadow: 0 12px 32px rgba(9, 40, 25, 0.12);
+      }
 
-    * {
-      box-sizing: border-box;
-    }
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 18px 14px 92px;
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      text-align: center;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 18px;
-    }
-
-    .logo {
-      width: min(320px, 82vw);
-      height: auto;
-      display: block;
-    }
-
-    .intro {
-      margin-bottom: 18px;
-      padding: 0 6px;
-    }
-
-    h1 {
-      margin: 0;
-      color: var(--green-dark);
-      font-size: 30px;
-      line-height: 1.1;
-    }
-
-    .subtitle {
-      margin: 10px auto 0;
-      max-width: 340px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    .scanner-card,
-    .photo-card {
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    .scanner-card {
-      padding: 12px;
-    }
-
-    video {
-      display: block;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      border-radius: 16px;
-      background: #050806;
-      object-fit: cover;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      padding: 14px 4px 4px;
-    }
-
-    button,
-    a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      border: none;
-      border-radius: 999px;
-      padding: 0 22px;
-      color: white;
-      background: var(--green);
-      box-shadow: 0 8px 18px rgba(36, 79, 45, 0.22);
-      cursor: pointer;
-      font: inherit;
-      font-size: 16px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    button:hover,
-    a:hover {
-      background: var(--green);
-    }
-
-    #takePhoto {
-      width: 100%;
-      max-width: 260px;
-      background: var(--green-light);
-    }
-
-    #takePhoto:hover {
-      background: var(--green);
-    }
-
-    canvas {
-      display: none;
-    }
-
-    .photo-card {
-      margin-top: 18px;
-      padding: 14px;
-      text-align: left;
-    }
-
-    h2 {
-      margin: 0 0 12px;
-      color: var(--green-dark);
-      font-size: 18px;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      border-radius: 16px;
-      background: var(--surface-soft);
-    }
-
-    #result {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    #downloadLink {
-      margin-top: 14px;
-      color: var(--green-dark);
-      background: var(--surface-soft);
-      box-shadow: none;
-    }
-
-    .popup-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      justify-content: center;
-      align-items: center;
-      padding: 18px;
-      background: rgba(9, 40, 25, 0.58);
-      z-index: 1000;
-    }
-
-    .popup-box {
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 22px;
-      padding: 26px 22px 22px;
-      background: var(--surface);
-      text-align: left;
-      box-shadow: 0 20px 50px rgba(9, 40, 25, 0.3);
-    }
-
-    .popup-box h2 {
-      margin-right: 34px;
-    }
-
-    .close-popup {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 36px;
-      min-height: 36px;
-      height: 36px;
-      padding: 0;
-      border-radius: 50%;
-      color: var(--green-dark);
-      background: var(--surface-soft);
-      box-shadow: none;
-      font-size: 24px;
-      line-height: 1;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: white;
-      padding: 10px 0;
-      border-top: 1px solid #ddd;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 2000;
-      backdrop-filter: blur(12px);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-    }
-
-    .nav-item {
-      min-height: auto;
-      border: none;
-      border-radius: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-      color: #555;
-      background: transparent;
-      box-shadow: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .nav-item span {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
-
-    .nav-item.active {
-      color: #0a7;
-      background: transparent;
-    }
-
-    .favorite-btn.active {
-      background: #d62828;
-      color: white;
-    }
-
-    @media (min-width: 760px) {
       body {
-        padding-top: 34px;
+        min-height: 100vh;
+        margin: 0;
+        padding: 18px 14px 92px;
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        text-align: center;
       }
 
       .page {
-        max-width: 620px;
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        width: min(320px, 82vw);
+        height: auto;
+        display: block;
+      }
+
+      .intro {
+        margin-bottom: 18px;
+        padding: 0 6px;
       }
 
       h1 {
-        font-size: 36px;
+        margin: 0;
+        color: var(--green-dark);
+        font-size: 30px;
+        line-height: 1.1;
       }
-    }
 
-    .popup-actions {
+      .subtitle {
+        margin: 10px auto 0;
+        max-width: 340px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .scanner-card,
+      .photo-card {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .scanner-card {
+        padding: 12px;
+      }
+
+      video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 16px;
+        background: #050806;
+        object-fit: cover;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        padding: 14px 4px 4px;
+      }
+
+      button,
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        border: none;
+        border-radius: 999px;
+        padding: 0 22px;
+        color: white;
+        background: var(--green);
+        box-shadow: 0 8px 18px rgba(36, 79, 45, 0.22);
+        cursor: pointer;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      button:hover,
+      a:hover {
+        background: var(--green);
+      }
+
+      #takePhoto {
+        width: 100%;
+        max-width: 260px;
+        background: var(--green-light);
+      }
+
+      #takePhoto:hover {
+        background: var(--green);
+      }
+
+      canvas {
+        display: none;
+      }
+
+      .photo-card {
+        margin-top: 18px;
+        padding: 14px;
+        text-align: left;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        color: var(--green-dark);
+        font-size: 18px;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        border-radius: 16px;
+        background: var(--surface-soft);
+      }
+
+      #result {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      #downloadLink {
+        margin-top: 14px;
+        color: var(--green-dark);
+        background: var(--surface-soft);
+        box-shadow: none;
+      }
+
+      .popup-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        justify-content: center;
+        align-items: center;
+        padding: 18px;
+        background: rgba(9, 40, 25, 0.58);
+        z-index: 1000;
+      }
+
+      .popup-box {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        border-radius: 22px;
+        padding: 26px 22px 22px;
+        background: var(--surface);
+        text-align: left;
+        box-shadow: 0 20px 50px rgba(9, 40, 25, 0.3);
+      }
+
+      .popup-box h2 {
+        margin-right: 34px;
+      }
+
+      .close-popup {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        min-height: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        color: var(--green-dark);
+        background: var(--surface-soft);
+        box-shadow: none;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: white;
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        z-index: 2000;
+        backdrop-filter: blur(12px);
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+      }
+
+      .nav-item {
+        min-height: auto;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        color: #555;
+        background: transparent;
+        box-shadow: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .nav-item span {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+        color: #0a7;
+        background: transparent;
+      }
+
+      .favorite-btn.active {
+        background: #d62828;
+        color: white;
+      }
+
+      @media (min-width: 760px) {
+        body {
+          padding-top: 34px;
+        }
+
+        .page {
+          max-width: 620px;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+      }
+
+      .popup-actions {
         display: flex;
         gap: 10px;
         margin-top: 20px;
@@ -290,205 +290,213 @@
         box-shadow: none !important;
         flex: 1;
       }
-  </style>
-</head>
+    </style>
+  </head>
 
-<body>
-  <main class="page">
-    <header class="topbar">
-      <img class="logo" src="/logo.png" alt="Lettuce Decide" />
-    </header>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <img class="logo" src="/logo.png" alt="Lettuce Decide" />
+      </header>
 
-    <section class="intro">
-      <h1>Skanna. Lär dig mer. Välj grönare.</h1>
-      <p class="subtitle">Ta en bild av en streckkod och få snabb produktinformation.</p>
-    </section>
+      <section class="intro">
+        <h1>Skanna. Lär dig mer. Välj grönare.</h1>
+        <p class="subtitle">
+          Ta en bild av en streckkod och få snabb produktinformation.
+        </p>
+      </section>
 
-    <section class="scanner-card" aria-label="Kamera">
-      <video id="video" autoplay playsinline></video>
+      <section class="scanner-card" aria-label="Kamera">
+        <video id="video" autoplay playsinline></video>
 
-      <div class="actions">
-        <button id="takePhoto">Ta bild</button>
+        <div class="actions">
+          <button id="takePhoto">Ta bild</button>
+        </div>
+      </section>
+
+      <canvas id="canvas"></canvas>
+
+      <section id="photoCard" class="photo-card" style="display: none">
+        <h2>Din bild</h2>
+        <img id="photo" alt="Tagen bild visas har" />
+        <div id="result"></div>
+
+        <a id="downloadLink" download="bild.jpg" style="display: none">
+          Spara bild
+        </a>
+      </section>
+
+      <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-box">
+          <button id="closePopup" class="close-popup">&times;</button>
+          <div id="popupContent"></div>
+        </div>
       </div>
-    </section>
+    </main>
 
-    <canvas id="canvas"></canvas>
+    <script type="module">
+      import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
 
-    <section id="photoCard" class="photo-card" style="display: none;">
-      <h2>Din bild</h2>
-      <img id="photo" alt="Tagen bild visas har" />
-      <div id="result"></div>
+      const reader = new BrowserMultiFormatReader();
 
-      <a id="downloadLink" download="bild.jpg" style="display: none;">
-        Spara bild
-      </a>
-    </section>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const photoCard = document.getElementById("photoCard");
+      const photo = document.getElementById("photo");
+      const takePhotoButton = document.getElementById("takePhoto");
+      const downloadLink = document.getElementById("downloadLink");
+      const resultElement = document.getElementById("result");
+      const popupOverlay = document.getElementById("popupOverlay"); ///Pop-up
+      const popupContent = document.getElementById("popupContent"); ///Pop-up
+      const closePopupButton = document.getElementById("closePopup"); ///Pop-up
 
-    <div id="popupOverlay" class="popup-overlay">
-      <div class="popup-box">
-        <button id="closePopup" class="close-popup">&times;</button>
-        <div id="popupContent"></div>
-      </div>
-    </div>
-  </main>
-
-  <script type="module">
-    import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
-
-    const reader = new BrowserMultiFormatReader();
-
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
-    const photoCard = document.getElementById("photoCard");
-    const photo = document.getElementById("photo");
-    const takePhotoButton = document.getElementById("takePhoto");
-    const downloadLink = document.getElementById("downloadLink");
-    const resultElement = document.getElementById("result");
-    const popupOverlay = document.getElementById("popupOverlay"); ///Pop-up
-    const popupContent = document.getElementById("popupContent"); ///Pop-up
-    const closePopupButton = document.getElementById("closePopup");  ///Pop-up
-
-    function openPopup(html) {
-      popupContent.innerHTML = html;
-      popupOverlay.style.display = "flex";
-    }
-
-    function closePopup() {
-      popupOverlay.style.display = "none";
-    }
-
-    closePopupButton.addEventListener("click", closePopup);
-
-    popupOverlay.addEventListener("click", (e) => {
-      if (e.target === popupOverlay) {
-        closePopup();
-      }
-    });
-
-    /* Favorite-knapp grejer*/
-    async function addFavorite(barcode) {
-      await fetch("/api/favorites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({ barcode })
-      });
-    }
-
-    async function removeFavorite(barcode) {
-      await fetch(`/api/favorites/${barcode}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
-    }
-
-    async function isFavorite(barcode) {
-      const res = await fetch("/api/favorites", {
-        credentials: "include"
-      });
-
-      const favorites = await res.json();
-
-      return favorites.includes(barcode);
-    }
-
-    async function toggleFavorite(barcode, button) {
-
-      const currentlyFavorite = await isFavorite(barcode);
-
-      if (currentlyFavorite) {
-        await removeFavorite(barcode);
-      } else {
-        await addFavorite(barcode);
+      function openPopup(html) {
+        popupContent.innerHTML = html;
+        popupOverlay.style.display = "flex";
       }
 
-      if (button) {
+      function closePopup() {
+        popupOverlay.style.display = "none";
+      }
 
-        if (!currentlyFavorite) {
-          button.innerHTML = "❤️ Favorite";
-          button.classList.add("active");
-        } else {
-          button.innerHTML = "🤍 Favorite";
-          button.classList.remove("active");
+      closePopupButton.addEventListener("click", closePopup);
+
+      popupOverlay.addEventListener("click", (e) => {
+        if (e.target === popupOverlay) {
+          closePopup();
         }
+      });
 
-      }
-    }
-    window.toggleFavorite = toggleFavorite;
-
-    async function shareProduct(name, brand) {
-      const shareData = {
-        title: name,
-        text: `Dela produkten: ${name} från ${brand}`,
-        url: window.location.href,
-      };
-
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else {
-          alert("Delning stöds inte i denna webbläsare.");
-        }
-      } catch (err) {
-        console.log("Delning avbröts");
-      }
-    }
-
-    window.shareProduct = shareProduct;
-
-    async function attachFavoriteButton(barcode) {
-      const favoriteButton = document.querySelector(".favorite-btn");
-      favoriteButton.addEventListener("click", async () => {
-        const res = await fetch("/api/me", {
-          credentials: "include"
+      /* Favorite-knapp grejer*/
+      async function addFavorite(barcode) {
+        await fetch("/api/favorites", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ barcode }),
         });
-        if (!res.ok) {
-          openPopup(`
+      }
+
+      async function removeFavorite(barcode) {
+        await fetch(`/api/favorites/${barcode}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+      }
+
+      async function isFavorite(barcode) {
+        const res = await fetch("/api/favorites", {
+          credentials: "include",
+        });
+
+        const favorites = await res.json();
+
+        return favorites.includes(barcode);
+      }
+
+      async function toggleFavorite(barcode, button) {
+        const currentlyFavorite = await isFavorite(barcode);
+
+        if (currentlyFavorite) {
+          await removeFavorite(barcode);
+        } else {
+          await addFavorite(barcode);
+        }
+
+        if (button) {
+          if (!currentlyFavorite) {
+            button.innerHTML = "❤️ Favorite";
+            button.classList.add("active");
+          } else {
+            button.innerHTML = "🤍 Favorite";
+            button.classList.remove("active");
+          }
+        }
+      }
+      window.toggleFavorite = toggleFavorite;
+
+      async function shareProduct(name, brand) {
+        const shareData = {
+          title: name,
+          text: `Dela produkten: ${name} från ${brand}`,
+          url: window.location.href,
+        };
+
+        try {
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else {
+            alert("Delning stöds inte i denna webbläsare.");
+          }
+        } catch (err) {
+          console.log("Delning avbröts");
+        }
+      }
+
+      window.shareProduct = shareProduct;
+
+      async function attachFavoriteButton(barcode) {
+        const favoriteButton = document.querySelector(".favorite-btn");
+        favoriteButton.addEventListener("click", async () => {
+          const res = await fetch("/api/me", {
+            credentials: "include",
+          });
+          if (!res.ok) {
+            openPopup(`
             <h2>Logga in</h2>
             <p>Du måste logga in för att spara produkter.</p>
           `);
-          return;
-        }
-        await toggleFavorite(barcode, favoriteButton);
-      });
-    }
-
-    async function lookupBarcode(barcode) {
-      resultElement.textContent = "Söker produkt...";      
-
-      const res = await fetch(`/api/lookup/${barcode}`);
-      if (!res.ok) {
-        openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
-        return;
+            return;
+          }
+          await toggleFavorite(barcode, favoriteButton);
+        });
       }
 
-      const d = await res.json();
+      async function lookupBarcode(barcode) {
+        resultElement.textContent = "Söker produkt...";
 
-      const favoriteIcon =
-        await isFavorite(barcode)
-          ? "❤️"
-          : "🤍";
+        const res = await fetch(`/api/lookup/${barcode}`);
+        if (!res.ok) {
+          openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+          return;
+        }
 
-      const ecoScoreHtml =
-        d.source !== "DABAS"
-          ? `
+        const d = await res.json();
+
+        const favoriteIcon = (await isFavorite(barcode)) ? "❤️" : "🤍";
+
+        const ecoScoreHtml =
+          d.source !== "DABAS"
+            ? `
             <p>
               <strong>Eco-Score:</strong>
               ${(d.ecoscore_grade || "?").toUpperCase()}
               (${d.ecoscore_score ?? "-"})
             </p>
-            ${d.category
-              ? `<p><strong>Kategori:</strong> ${d.category}</p>`
-              : ""}
+            ${
+              d.category
+                ? `<p><strong>Kategori:</strong> ${d.category}</p>`
+                : ""
+            }
           `
-          : "";
+            : "";
 
-      openPopup(`
+        openPopup(`
         <h2>${d.name}</h2>
 
         <p><strong>Märke:</strong> ${d.brand}</p>
+
+        ${
+          d.warnings && d.warnings.length > 0
+            ? `<p style="margin-bottom: 4px;"><strong>Varningar:</strong></p>
+             <ul style="margin-top: 0; padding-left: 20px; color: #d62828;">
+               ${d.warnings.map((warning) => `<li>${warning.trim()}</li>`).join("")}
+             </ul>`
+            : `<p><strong>Varningar:</strong> Inga</p>`
+        }
+
 
         ${ecoScoreHtml}
 
@@ -514,73 +522,73 @@
         </div>
       `);
 
-      attachFavoriteButton(barcode);
-    }
-
-    async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: { ideal: "environment" },
-            width: { ideal: 1920 },
-            height: { ideal: 1080 }
-          },
-          audio: false
-        });
-        video.srcObject = stream;
-      } catch (error) {
-        alert("Kunde inte starta kameran. Kontrollera kamerabehörighet.");
-        console.error(error);
+        attachFavoriteButton(barcode);
       }
-    }
 
-    takePhotoButton.addEventListener("click", async () => {
-      const context = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
-      photoCard.style.display = "block";
-      photo.src = imageDataUrl;
-      downloadLink.href = imageDataUrl;
-      downloadLink.download = "bild.jpg";
-      downloadLink.style.display = "inline-flex";
-
-      try {
-        const result = await reader.decodeFromImageUrl(imageDataUrl);
-        let barcode = result.getText().trim();
-        if (barcode.length === 13) {
-          barcode = "0" + barcode
+      async function startCamera() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: { ideal: "environment" },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+            audio: false,
+          });
+          video.srcObject = stream;
+        } catch (error) {
+          alert("Kunde inte starta kameran. Kontrollera kamerabehörighet.");
+          console.error(error);
         }
+      }
 
-        await lookupBarcode(barcode);
-      } catch (err) {
-        openPopup(`
+      takePhotoButton.addEventListener("click", async () => {
+        const context = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
+        photoCard.style.display = "block";
+        photo.src = imageDataUrl;
+        downloadLink.href = imageDataUrl;
+        downloadLink.download = "bild.jpg";
+        downloadLink.style.display = "inline-flex";
+
+        try {
+          const result = await reader.decodeFromImageUrl(imageDataUrl);
+          let barcode = result.getText().trim();
+          if (barcode.length === 13) {
+            barcode = "0" + barcode;
+          }
+
+          await lookupBarcode(barcode);
+        } catch (err) {
+          openPopup(`
           <h2>Ingen streckkod hittades</h2>
           <p>Försök igen med bättre ljus eller tydligare fokus.</p>
         `);
-      }
-    });
+        }
+      });
 
-    startCamera();
-  </script>
+      startCamera();
+    </script>
 
-  <nav class="bottom-nav">
-    <button class="nav-item active">
-      <span>&#127968;</span>
-      <small>Hem</small>
-    </button>
+    <nav class="bottom-nav">
+      <button class="nav-item active">
+        <span>&#127968;</span>
+        <small>Hem</small>
+      </button>
 
-    <a href="/saved" class="nav-item">
-      <span>&#10084;&#65039;</span>
-      <small>Sparat</small>
-    </a>
+      <a href="/saved" class="nav-item">
+        <span>&#10084;&#65039;</span>
+        <small>Sparat</small>
+      </a>
 
-    <button class="nav-item">
-      <span>&#8505;&#65039;</span>
-      <small>Info</small>
-    </button>
-  </nav>
-</body>
+      <button class="nav-item">
+        <span>&#8505;&#65039;</span>
+        <small>Info</small>
+      </button>
+    </nav>
+  </body>
 </html>
