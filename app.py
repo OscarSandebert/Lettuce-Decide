@@ -125,7 +125,11 @@ def lookup(barcode):
         data["name"] = dabas_result.get("Hyllkantstext", "Okänt namn")
         data["brand"] = dabas_result.get("Varumarke", {}).get("Varumarke", "Okänt märke")
         data["raw_ingredients"] = dabas_result.get("Ingrediensforteckning", "Okända ingredienser")
-        data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+
+        ingredients_res = cleansing.correct_ingredient(data["raw_ingredients"])
+        if isinstance(ingredients_res, dict) and "error" in ingredients_res:
+            return jsonify(ingredients_res), 429
+        data["ingredients"] = ingredients_res
         data["source"] = "DABAS"
 
     if off_result:
@@ -142,11 +146,15 @@ def lookup(barcode):
             data["name"] = product.get("product_name", "Okänt namn")
             data["brand"] = product.get("brands", "Okänt märke")
             data["raw_ingredients"] = product.get("ingredients_text", "Okända ingredienser")
-            data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
 
-    warnings = lookupIngredients.match_ingredients(data["ingredients"])
+            ingredients_res = cleansing.correct_ingredient(data["raw_ingredients"])
+            if isinstance(ingredients_res, dict) and "error" in ingredients_res:
+                return jsonify(ingredients_res), 429
+            data["ingredients"] = ingredients_res
+
+    warnings = lookupIngredients.match_ingredients(data.get("ingredients", []))
     for warning in warnings:
-        msg = f"{warning.get("standard_name")}: {warning.get("risk_reason")}\n"
+        msg = f"{warning.get('standard_name')}: {warning.get('risk_reason')}\n"
         data.setdefault("warnings", []).append(msg)
 
     return jsonify({
