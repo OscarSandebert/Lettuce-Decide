@@ -445,7 +445,13 @@
 
         const res = await fetch(`/api/lookup/${barcode}`);
         if (!res.ok) {
-          openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+          if (res.status === 429) {
+            openPopup(
+              `<h2>Tjänsten är upptagen</h2><p>Vår AI tar för tillfället en liten paus på grund av hög belastning. Vänligen försök igen om en stund!</p>`,
+            );
+          } else {
+            openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+          }
           resultElement.textContent = null;
           return;
         }
