@@ -138,6 +138,7 @@ def lookup(barcode):
         
         data["ecoscore_grade"] = env_data.get("ecoscore_grade", "?")
         data["ecoscore_score"] = env_data.get("ecoscore_score", "?")
+        data["co2_total"] = env_data.get("co2_total", "?")
         data["category"] = env_data.get("agribalyse", {}).get("name_en", "?")
         data["source"] = "DABAS + OpenFoodFacts"
 
@@ -164,6 +165,7 @@ def lookup(barcode):
         "brand": data.get("brand", "Unknown"),
         "ecoscore_grade": data.get("ecoscore_grade", "Unknown"),
         "ecoscore_score": data.get("ecoscore_score", "Unknown"),
+        "co2_total": data.get("co2_total", "Unknown"),
         "category": data.get("category", "Unknown"),
         "warnings": data.get("warnings", [])
     })

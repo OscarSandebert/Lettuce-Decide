@@ -463,27 +463,38 @@
           console.error(err);
         }
 
+        const hasEnvironmentalData =
+          d.co2_total !== null &&
+          d.co2_total !== undefined &&
+          String(d.co2_total).toLowerCase() !== "unknown" &&
+          d.co2_total !== "?" &&
+          d.ecoscore_grade !== null &&
+          d.ecoscore_grade !== undefined &&
+          String(d.ecoscore_grade).toLowerCase() !== "unknown" &&
+          d.ecoscore_grade !== "?";
+
         const ecoScoreHtml =
           d.source !== "DABAS"
-            ? `
-            <p>
-              <strong>Miljödata:</strong><br>
-              Denna vara släpper ut ${d.co2_total ?? "okänt antal"} kg CO₂-ekvivalenter
-              och har Eco-Score ${(d.ecoscore_grade || "?").toUpperCase()}.
-            </p>
+            ? hasEnvironmentalData
+              ? `
+                <p>
+                  <strong>Miljödata:</strong><br>
+                  Denna vara släpper ut ${d.co2_total} kg CO₂-ekvivalenter
+                  och har Eco-Score ${(d.ecoscore_grade || "?").toUpperCase()}.
+                </p>
 
-            <p>
-              <strong>Eco-Score:</strong>
-              ${(d.ecoscore_grade || "?").toUpperCase()}
-              (${d.ecoscore_score ?? "-"})
-            </p>
-
-            ${
-              d.category
-                ? `<p><strong>Kategori:</strong> ${d.category}</p>`
-                : ""
-            }
-          `
+                ${
+                  d.category && d.category !== "?" && d.category !== "Unknown"
+                    ? `<p><strong>Kategori:</strong> ${d.category}</p>`
+                    : ""
+                }
+              `
+              : `
+                <p>
+                  <strong>Miljödata:</strong><br>
+                  Kunde inte hitta miljödata för produkten.
+                </p>
+              `
             : "";
 
         openPopup(`

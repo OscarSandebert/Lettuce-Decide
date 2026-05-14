@@ -5,12 +5,15 @@ def getProductEnvironmentalData(data):
         product = data["product"]
         
         eco_data = product.get("ecoscore_data", {})
-        
+        agribalyse = eco_data.get("agribalyse", {})
+
+
         result = {
             "name": product.get("product_name", "Okänt namn"),
             "ecoscore_grade": product.get("ecoscore_grade", "unknown"),
             "ecoscore_score": product.get("ecoscore_score"),
-            "agribalyse": eco_data.get("agribalyse", {}),
+            "co2_total": agribalyse.get("co2_total"),
+            "agribalyse": agribalyse,
         }
 
         return result
