@@ -456,13 +456,19 @@
         } catch (err) {
           console.error(err);
         }
-
+        const co2Text =
+          d.co2_total !== null &&
+          d.co2_total !== undefined &&
+          d.co2_total !== "Unknown" &&
+          d.co2_total !== "?"
+            ? `${d.co2_total} kg CO₂-ekvivalenter`
+            : "okänd mängd CO₂-ekvivalenter";
         const ecoScoreHtml =
           d.source !== "DABAS"
             ? `
             <p>
               <strong>Miljödata:</strong><br>
-              Denna vara släpper ut ${d.co2_total ?? "okänt antal"} kg CO₂-ekvivalenter
+              Denna vara släpper ut ${co2Text}
               och har Eco-Score ${(d.ecoscore_grade || "?").toUpperCase()}.
             </p>
 
