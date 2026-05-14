@@ -400,11 +400,14 @@
       }
       window.toggleFavorite = toggleFavorite;
 
-      async function shareProduct(name, brand) {
+      async function shareProduct(barcode) {
+        const res = await fetch(`/api/lookup/${barcode}`);
+        const d = await res.json();
+
         const shareData = {
-          title: name,
-          text: `Dela produkten: ${name} från ${brand}`,
-          url: window.location.href,
+          title: d.name,
+          text: `Dela produkten: ${d.name} från ${d.brand}`,
+          url: "https://www.dabas.com/productsheet/0" + barcode,
         };
 
         try {
@@ -508,10 +511,7 @@
 
           <button
             class="share-btn"
-            onclick="shareProduct(
-              '${d.name.replace(/'/g, "\\'")}',
-              '${d.brand.replace(/'/g, "\\'")}'
-            )">
+            onclick="shareProduct('${barcode}')">
             📤 Dela
           </button>
 
