@@ -1,0 +1,1069 @@
+[
+  {
+    "id": "E102",
+    "standard_name": "Tartrazin (E 102)",
+    "search_terms": [
+      "tartrazin",
+      "e102",
+      "e 102",
+      "yellow 5",
+      "ci food yellow 4"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Kopplat till hyperaktivitet och ouppmärksamhet hos barn. Kan utlösa allergiska reaktioner, särskilt hos astmatiker och aspirinkänsliga. Förbjudet i Norge och Österrike. EU kräver varningstext på produkter som innehåller detta ämne.",
+    "banned_in": ["Norway", "Austria"],
+    "eu_warning_required": true,
+    "found_in": ["Läsk", "Godis", "Chips", "Såser", "Frukostflingor", "Gelé"]
+  },
+  {
+    "id": "E104",
+    "standard_name": "Kinolingult (E 104)",
+    "search_terms": [
+      "kinolingult",
+      "e104",
+      "e 104",
+      "quinoline yellow",
+      "ci food yellow 13"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Misstänkt cancerframkallande. Kopplat till allergi och hyperaktivitet hos barn. Förbjudet i USA, Australien och Japan. EU rekommenderar att tillverkare undviker det.",
+    "banned_in": ["USA", "Australia", "Japan"],
+    "eu_warning_required": true,
+    "found_in": ["Drycker", "Glass", "Godis", "Konserverade frukter"]
+  },
+  {
+    "id": "E110",
+    "standard_name": "Para-orange (E 110)",
+    "search_terms": [
+      "para-orange",
+      "solnedgångsgult",
+      "e110",
+      "e 110",
+      "sunset yellow fcf",
+      "yellow 6"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Del av 'Southampton Six'. Kopplat till hyperaktivitet hos barn. Kan utlösa astma och hudreaktioner. EU kräver varningstext.",
+    "banned_in": ["Norway", "Finland"],
+    "eu_warning_required": true,
+    "found_in": ["Apelsindrycker", "Godis", "Marmelad", "Kakor", "Läkemedel"]
+  },
+  {
+    "id": "E122",
+    "standard_name": "Azorubin (E 122)",
+    "search_terms": [
+      "azorubin",
+      "karmosin",
+      "e122",
+      "e 122",
+      "carmoisine",
+      "red 3"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Del av 'Southampton Six'. Kopplat till hyperaktivitet hos barn. Förbjudet i USA, Australien, Japan och Sverige (historiskt).",
+    "banned_in": ["USA", "Australia", "Japan"],
+    "eu_warning_required": true,
+    "found_in": ["Gelédessert", "Marmelad", "Läsk", "Godis"]
+  },
+  {
+    "id": "E123",
+    "standard_name": "Amarant (E 123)",
+    "search_terms": ["amarant", "e123", "e 123", "red 2", "ci food red 9"],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Förbjudet i USA sedan 1976 på grund av cancermisstankar efter djurstudier. Fortfarande tillåtet i EU men starkt omdebatterat.",
+    "banned_in": ["USA", "Russia"],
+    "eu_warning_required": false,
+    "found_in": ["Kaviarprodukter", "Alkoholdrycker", "Fiskrom"]
+  },
+  {
+    "id": "E124",
+    "standard_name": "Nykockin (E 124)",
+    "search_terms": [
+      "nykockin",
+      "e124",
+      "e 124",
+      "ponceau 4r",
+      "cochineal red a",
+      "red 18"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Del av 'Southampton Six'. Kopplat till hyperaktivitet hos barn. Förbjudet i USA och Norge. EU kräver varningstext.",
+    "banned_in": ["USA", "Norway"],
+    "eu_warning_required": true,
+    "found_in": ["Gelé", "Maraschino-körsbär", "Räkor", "Tomatsås"]
+  },
+  {
+    "id": "E127",
+    "standard_name": "Erytrosin (E 127)",
+    "search_terms": ["erytrosin", "e127", "e 127", "erythrosine", "red 3"],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Kopplat till sköldkörtelstörningar och hormonstörningar. Förbjudet som kosmetika i USA. Begränsat tillåtet i EU.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Maraschino-körsbär", "Cocktailkörsbär", "Viss glass"]
+  },
+  {
+    "id": "E129",
+    "standard_name": "Allurarött AC (E 129)",
+    "search_terms": [
+      "allurarött",
+      "allurarött ac",
+      "e129",
+      "e 129",
+      "allura red ac",
+      "red 40"
+    ],
+    "category": "artificial_color",
+    "risk_level": "high",
+    "risk_reason": "Del av 'Southampton Six'. En av de vanligaste konstgjorda färgerna. Kopplat till hyperaktivitet hos barn och allergier. EU kräver varningstext.",
+    "banned_in": [
+      "Denmark",
+      "Belgium",
+      "France",
+      "Germany",
+      "Switzerland",
+      "Sweden",
+      "Austria"
+    ],
+    "eu_warning_required": true,
+    "found_in": ["Läsk", "Energidrycker", "Godis", "Frukostflingor", "Glass"]
+  },
+  {
+    "id": "E133",
+    "standard_name": "Briljantblått FCF (E 133)",
+    "search_terms": [
+      "briljantblått",
+      "briljantblått fcf",
+      "e133",
+      "e 133",
+      "brilliant blue fcf",
+      "blue 1"
+    ],
+    "category": "artificial_color",
+    "risk_level": "medium",
+    "risk_reason": "Djurstudier indikerar möjliga cancerrisker vid höga doser. Förbjudet i flera europeiska länder. Kan utlösa allergiska reaktioner.",
+    "banned_in": [
+      "Belgium",
+      "France",
+      "Germany",
+      "Switzerland",
+      "Sweden",
+      "Austria"
+    ],
+    "eu_warning_required": false,
+    "found_in": ["Läsk", "Godis", "Glass", "Bakprodukter"]
+  },
+  {
+    "id": "E142",
+    "standard_name": "Grön S (E 142)",
+    "search_terms": [
+      "grön s",
+      "e142",
+      "e 142",
+      "green s",
+      "acid brilliant green bs"
+    ],
+    "category": "artificial_color",
+    "risk_level": "medium",
+    "risk_reason": "Kopplat till allergiska reaktioner. Inte rekommenderat av FSA. Förbjudet i USA, Kanada och Japan.",
+    "banned_in": ["USA", "Canada", "Japan"],
+    "eu_warning_required": false,
+    "found_in": ["Ärtsoppor", "Mintgelé", "Chokladsås"]
+  },
+  {
+    "id": "E150d",
+    "standard_name": "Sockerkulör; ammoniaksulfitprocessen (E 150d)",
+    "search_terms": [
+      "sockerkulör",
+      "ammoniaksulfitprocessen",
+      "e150d",
+      "e 150d",
+      "e 150 d",
+      "ammonia caramel",
+      "caramel color iv"
+    ],
+    "category": "artificial_color",
+    "risk_level": "medium",
+    "risk_reason": "Innehåller 4-MEI (4-methylimidazole) som är en känd cancerframkallande kemikalie i djurstudier. Vanligt i cola och mörka ölsorter.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Cola", "Läsk", "Öl", "Sojasåser", "Bröd"]
+  },
+  {
+    "id": "E151",
+    "standard_name": "Briljantsvart BN (E 151)",
+    "search_terms": [
+      "briljantsvart",
+      "briljantsvart bn",
+      "e151",
+      "e 151",
+      "brilliant black bn",
+      "black pn"
+    ],
+    "category": "artificial_color",
+    "risk_level": "medium",
+    "risk_reason": "Syntetisk svart färg kopplad till allergiska reaktioner och hyperaktivitet. Förbjudet i USA, Kanada och Japan.",
+    "banned_in": ["USA", "Canada", "Japan", "Australia"],
+    "eu_warning_required": false,
+    "found_in": ["Lakrits", "Kaviar", "Viss mat i svart färg"]
+  },
+  {
+    "id": "E155",
+    "standard_name": "Brun HT (E 155)",
+    "search_terms": [
+      "brun ht",
+      "e155",
+      "e 155",
+      "brown ht",
+      "chocolate brown ht"
+    ],
+    "category": "artificial_color",
+    "risk_level": "medium",
+    "risk_reason": "Kopplat till allergiska reaktioner. Förbjudet i USA, Kanada och Japan.",
+    "banned_in": ["USA", "Canada", "Japan", "Australia"],
+    "eu_warning_required": false,
+    "found_in": ["Chokladprodukter", "Kakor", "Desserter"]
+  },
+  {
+    "id": "E210",
+    "standard_name": "Bensoesyra (E 210)",
+    "search_terms": ["bensoesyra", "e210", "e 210", "benzoic acid"],
+    "category": "preservative",
+    "risk_level": "medium",
+    "risk_reason": "Kan bilda bensen (ett starkt cancerframkallande ämne) när det kombineras med vitamin C (E300) i sura drycker. Kopplat till hyperaktivitet hos barn.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Läsk", "Fruktjuice", "Pickles", "Marmelad"]
+  },
+  {
+    "id": "E211",
+    "standard_name": "Natriumbensoat (E 211)",
+    "search_terms": ["natriumbensoat", "e211", "e 211", "sodium benzoate"],
+    "category": "preservative",
+    "risk_level": "high",
+    "risk_reason": "Bildar bensen när det kombineras med askorbinsyra (vitamin C). Kopplat till hyperaktivitet och ADHD-liknande symtom hos barn. Kan orsaka allergiska reaktioner hos astmatiker.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": [
+      "Läsk",
+      "Energidrycker",
+      "Sojasås",
+      "Salladsdressingar",
+      "Godis"
+    ]
+  },
+  {
+    "id": "E212",
+    "standard_name": "Kaliumbensoat (E 212)",
+    "search_terms": ["kaliumbensoat", "e212", "e 212", "potassium benzoate"],
+    "category": "preservative",
+    "risk_level": "medium",
+    "risk_reason": "Liknande risker som E211. Kan bilda bensen i kombination med vitamin C.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Läsk", "Margarin", "Konserver"]
+  },
+  {
+    "id": "E220",
+    "standard_name": "Svaveldioxid (E 220)",
+    "search_terms": ["svaveldioxid", "e220", "e 220", "sulphur dioxide", "so2"],
+    "category": "preservative",
+    "risk_level": "medium",
+    "risk_reason": "Kan utlösa astmaattacker och allergiska reaktioner hos känsliga personer. Förstör B1-vitamin (tiamin) i mat.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Vin", "Torkad frukt", "Fruktjuice", "Räkor", "Chips"]
+  },
+  {
+    "id": "E250",
+    "standard_name": "Natriumnitrit (E 250)",
+    "search_terms": ["natriumnitrit", "e250", "e 250", "sodium nitrite"],
+    "category": "preservative",
+    "risk_level": "high",
+    "risk_reason": "Bildar nitrosaminer i tarmen och vid höga temperaturer (grillning, stekning) – ett starkt cancerframkallande ämne. WHO/IARC klassificerar processat kött med nitriter som Group 1 cancerframkallande. Direkt toxiskt i höga doser.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Bacon", "Korv", "Skinka", "Charkuteri", "Hot dogs", "Salami"]
+  },
+  {
+    "id": "E251",
+    "standard_name": "Natriumnitrat (E 251)",
+    "search_terms": ["natriumnitrat", "e251", "e 251", "sodium nitrate"],
+    "category": "preservative",
+    "risk_level": "high",
+    "risk_reason": "Omvandlas till nitriter i kroppen med liknande cancerrisker som E250. Kopplat till ökad risk för kolorektalcancer vid hög konsumtion.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Bacon", "Korv", "Rökt kött", "Fiskprodukter"]
+  },
+  {
+    "id": "E252",
+    "standard_name": "Kaliumnitrat (E 252)",
+    "search_terms": [
+      "kaliumnitrat",
+      "e252",
+      "e 252",
+      "potassium nitrate",
+      "saltpeter"
+    ],
+    "category": "preservative",
+    "risk_level": "medium",
+    "risk_reason": "Kan omvandlas till nitriter med associerade cancerrisker. Historiskt kontroversiellt.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Charkuteri", "Rökt kött", "Ost"]
+  },
+  {
+    "id": "E284",
+    "standard_name": "Borsyra (E 284)",
+    "search_terms": ["borsyra", "e284", "e 284", "boric acid"],
+    "category": "preservative",
+    "risk_level": "high",
+    "risk_reason": "Toxisk vid konsumtion. Förbjuden i de flesta länder som livsmedelstillsats. Kopplat till njurskador och fertilitetsproblem.",
+    "banned_in": ["USA", "Most EU countries"],
+    "eu_warning_required": false,
+    "found_in": ["Kaviar (traditionell beredning)"]
+  },
+  {
+    "id": "E285",
+    "standard_name": "Natriumtetraborat (borax) (E 285)",
+    "search_terms": [
+      "natriumtetraborat",
+      "borax",
+      "e285",
+      "e 285",
+      "sodium tetraborate"
+    ],
+    "category": "preservative",
+    "risk_level": "high",
+    "risk_reason": "Borax är toxiskt och förbjudet som livsmedelstillsats i many länder inklusive USA. Kan orsaka njurskador och hormonstörningar.",
+    "banned_in": ["USA"],
+    "eu_warning_required": false,
+    "found_in": ["Kaviar", "Räkor (viss beredning)"]
+  },
+  {
+    "id": "E951",
+    "standard_name": "Aspartam (E 951)",
+    "search_terms": ["aspartam", "e951", "e 951", "aspartame", "nutrasweet"],
+    "category": "sweetener",
+    "risk_level": "medium",
+    "risk_reason": "WHO/IARC klassificerade aspartam som 'possibly carcinogenic to humans' (Group 2B) år 2023. Kopplat till huvudvärk och neurologiska symtom hos känsliga. Farligt för PKU-patienter (fenylketonuri). Kan påverka tarmfloran negativt.",
+    "banned_in": [],
+    "eu_warning_required": true,
+    "found_in": [
+      "Light-drycker",
+      "Sockerfritt tuggummi",
+      "Lågkaloridessert",
+      "Läkemedel"
+    ]
+  },
+  {
+    "id": "E952",
+    "standard_name": "Cyklamat (E 952)",
+    "search_terms": [
+      "cyklamat",
+      "e952",
+      "e 952",
+      "cyclamate",
+      "sodium cyclamate"
+    ],
+    "category": "sweetener",
+    "risk_level": "high",
+    "risk_reason": "Förbjudet i USA sedan 1969 på grund av cancermisstankar. Studier kopplar det till blåscancer i djur. Fortfarande tillåtet i EU och Sverige.",
+    "banned_in": ["USA", "Japan"],
+    "eu_warning_required": false,
+    "found_in": ["Light-drycker", "Sockerfri sylt", "Dessert"]
+  },
+  {
+    "id": "E954",
+    "standard_name": "Sackarin (E 954)",
+    "search_terms": ["sackarin", "e954", "e 954", "saccharin", "sweet'n low"],
+    "category": "sweetener",
+    "risk_level": "medium",
+    "risk_reason": "Tidiga djurstudier kopplade det till blåscancer (sedan delvis ifrågasatt). Passerar modersmjölk. Bör undvikas av gravida och barn.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Light-drycker", "Sötningsmedel", "Bakprodukter"]
+  },
+  {
+    "id": "E955",
+    "standard_name": "Sukralos (E 955)",
+    "search_terms": ["sukralos", "e955", "e 955", "sucralose", "splenda"],
+    "category": "sweetener",
+    "risk_level": "medium",
+    "risk_reason": "Studier visar att sukralos kan påverka tarmfloran negativt och kan kopplas till ökad risk för typ 2-diabetes, kardiovaskulär sjukdom och för tidig födseln. Nyare forskning (2023) kopplar det till DNA-skador.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Light-produkter", "Sockerfritt godis", "Sportdrycker"]
+  },
+  {
+    "id": "E961",
+    "standard_name": "Neotam (E 961)",
+    "search_terms": ["neotam", "e961", "e 961", "neotame"],
+    "category": "sweetener",
+    "risk_level": "medium",
+    "risk_reason": "Relativt nytt sötningsmedel med begränsad långsiktlig forskning. Strukturellt likt aspartam. Kontroversiellt bland kostforskare.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Processade livsmedel", "Light-produkter"]
+  },
+  {
+    "id": "E621",
+    "standard_name": "Mononatriumglutamat (E 621)",
+    "search_terms": [
+      "mononatriumglutamat",
+      "natriumglutamat",
+      "glutamat",
+      "e621",
+      "e 621",
+      "msg",
+      "glutamate"
+    ],
+    "category": "flavor_enhancer",
+    "risk_level": "medium",
+    "risk_reason": "Kopplat till 'MSG-symptom komplexet': huvudvärk, illamående, svettningar och hjärtklappning hos känsliga individer. Djurstudier kopplar höga doser till nervskador och hjärtproblem. Maskar aptitregleringen.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": [
+      "Chips",
+      "Snacks",
+      "Snabbmat",
+      "Sojasås",
+      "Buljonger",
+      "Kryddmixer"
+    ]
+  },
+  {
+    "id": "E627",
+    "standard_name": "Dinatriumguanylat (E 627)",
+    "search_terms": [
+      "dinatriumguanylat",
+      "e627",
+      "e 627",
+      "disodium guanylate",
+      "gmp"
+    ],
+    "category": "flavor_enhancer",
+    "risk_level": "low",
+    "risk_reason": "Används ofta i kombination med MSG för att förstärka effekten. Bör undvikas av giktkänsliga. Ofta gömd smakförstärkare.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Chips", "Snacks", "Soppor", "Smaksättare"]
+  },
+  {
+    "id": "E631",
+    "standard_name": "Dinatriuminosinat (E 631)",
+    "search_terms": [
+      "dinatriuminosinat",
+      "e631",
+      "e 631",
+      "disodium inosinate",
+      "imp"
+    ],
+    "category": "flavor_enhancer",
+    "risk_level": "low",
+    "risk_reason": "Används med MSG. Kan förvärra gikt. Ofta djurbaserat (fisk/kött) – inte veganskt.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Chips", "Smaksättare", "Buljonger"]
+  },
+  {
+    "id": "E635",
+    "standard_name": "Dinatrium-5'-ribonukleotider (E 635)",
+    "search_terms": [
+      "dinatrium-5'-ribonukleotider",
+      "e635",
+      "e 635",
+      "disodium 5-ribonucleotides"
+    ],
+    "category": "flavor_enhancer",
+    "risk_level": "medium",
+    "risk_reason": "Blandning av E627 och E631. Förstärker MSG-effekten. Kopplat till hudutslag (MSG-urtikaria). Inte veganskt.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Chips", "Kryddmixer", "Snabbmat"]
+  },
+  {
+    "id": "E319",
+    "standard_name": "TBHQ (E 319)",
+    "search_terms": ["tbhq", "e319", "e 319", "tertiary butylhydroquinone"],
+    "category": "antioxidant_preservative",
+    "risk_level": "high",
+    "risk_reason": "Djurstudier kopplar TBHQ till tumörer i magsäcken och DNA-skador. Kopplat till immunstörningar, ökad allergirisk, synstörningar och leverskador. Förbjudet i Japan.",
+    "banned_in": ["Japan"],
+    "eu_warning_required": false,
+    "found_in": [
+      "Chips",
+      "Popcorn (mikrovågor)",
+      "Frysta produkter",
+      "Kakor",
+      "Snabbmat",
+      "Vegetabiliska oljor"
+    ]
+  },
+  {
+    "id": "E320",
+    "standard_name": "BHA (E 320)",
+    "search_terms": [
+      "bha",
+      "butylhydroxianisol",
+      "e320",
+      "e 320",
+      "butylated hydroxyanisole"
+    ],
+    "category": "antioxidant_preservative",
+    "risk_level": "high",
+    "risk_reason": "IARC klassificerar BHA som möjligen cancerframkallande för människor. Kopplat till tumörutveckling i djurstudier. Misstänkt hormonstörare. Förbjudet i Japan och begränsat i EU.",
+    "banned_in": ["Japan"],
+    "eu_warning_required": false,
+    "found_in": ["Chips", "Spannmål", "Kex", "Korv", "Smör"]
+  },
+  {
+    "id": "E321",
+    "standard_name": "BHT (E 321)",
+    "search_terms": [
+      "bht",
+      "butylhydroxitoluen",
+      "e321",
+      "e 321",
+      "butylated hydroxytoluene"
+    ],
+    "category": "antioxidant_preservative",
+    "risk_level": "medium",
+    "risk_reason": "Kopplat till lever- och njurskador i djurstudier. Misstänkt endokrinstörare. Kan störa aptitsignaleringen. Begränsat tillåtet men omdebatterat.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Chips", "Frukostflingor", "Kex", "Fryst mat", "Tuggummi"]
+  },
+  {
+    "id": "E433",
+    "standard_name": "Polysorbat 80 (E 433)",
+    "search_terms": [
+      "polysorbat 80",
+      "e433",
+      "e 433",
+      "polysorbate 80",
+      "tween 80"
+    ],
+    "category": "emulsifier",
+    "risk_level": "medium",
+    "risk_reason": "Studier på möss visar att det stör tarmfloran och kan bidra till inflammation och metabolt syndrom. Kopplat till ökad tarmpermeabilitet.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Glass", "Bakprodukter", "Salladsdressingar"]
+  },
+  {
+    "id": "E466",
+    "standard_name": "Karboximetylcellulosa (E 466)",
+    "search_terms": [
+      "karboximetylcellulosa",
+      "cellulosagummi",
+      "cellulosegummi",
+      "cmc",
+      "e466",
+      "e 466",
+      "carboxymethyl cellulose"
+    ],
+    "category": "emulsifier",
+    "risk_level": "medium",
+    "risk_reason": "Djurstudier kopplar CMC till störd tarmflora och koloncancer. Kan orsaka inflammation i tarmen hos känsliga individer.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": [
+      "Glass",
+      "Salladsdressingar",
+      "Bakprodukter",
+      "Glutenfria produkter"
+    ]
+  },
+  {
+    "id": "E471",
+    "standard_name": "Mono- och diglycerider av fettsyror (E 471)",
+    "search_terms": [
+      "mono- och diglycerider av fettsyror",
+      "e471",
+      "e 471",
+      "mdg",
+      "mono- and diglycerides of fatty acids"
+    ],
+    "category": "emulsifier",
+    "risk_level": "medium",
+    "risk_reason": "Kan vara djurbaserade. Nyare forskning kopplar högt intag till ökad kardiovaskulär risk. Kan dölja transfetter som inte deklareras separat.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Margarin", "Bröd", "Glass", "Chips", "Kakor"]
+  },
+  {
+    "id": "E407",
+    "standard_name": "Karragenan (E 407)",
+    "search_terms": [
+      "karragenan",
+      "e407",
+      "e 407",
+      "carrageenan",
+      "irish moss extract"
+    ],
+    "category": "thickener",
+    "risk_level": "medium",
+    "risk_reason": "Studier kopplar karragenan till tarminflamation, magsår och störningar i tarmfloran. Misstänkt bidragande till IBS.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": [
+      "Havredryck",
+      "Mandelmjölk",
+      "Fettfria mejerivaror",
+      "Charkuteri"
+    ]
+  },
+  {
+    "id": "E924",
+    "standard_name": "Kaliumbromat (E 924)",
+    "search_terms": [
+      "kaliumbromat",
+      "e924",
+      "e 924",
+      "potassium bromate",
+      "bromated flour"
+    ],
+    "category": "bleaching_agent",
+    "risk_level": "high",
+    "risk_reason": "IARC klassificerar det som möjligen cancerframkallande. Förbjudet i EU, Kanada, Kina och Brasilien.",
+    "banned_in": ["EU", "UK", "Canada", "China", "Brazil"],
+    "eu_warning_required": false,
+    "found_in": ["Bröd", "Bagels", "Mjölprodukter (USA)"]
+  },
+  {
+    "id": "E927b",
+    "standard_name": "Azodikarbonamid (E 927b)",
+    "search_terms": [
+      "azodikarbonamid",
+      "e927b",
+      "e 927b",
+      "e 927 b",
+      "e927",
+      "ada",
+      "azodicarbonamide"
+    ],
+    "category": "bleaching_agent",
+    "risk_level": "high",
+    "risk_reason": "Förbjudet i EU och Australien. Vid upphettning bildas semicarbazid, ett möjligen cancerframkallande ämne.",
+    "banned_in": ["EU", "Australia", "Singapore"],
+    "eu_warning_required": false,
+    "found_in": ["Bröd (USA)", "Snabbmatsbröd", "Hamburgerbröd"]
+  },
+  {
+    "id": "HFCS",
+    "standard_name": "Glukos-fruktossirap / Isoglukos",
+    "search_terms": [
+      "glukos-fruktossirap",
+      "isoglukos",
+      "glukossirap",
+      "majssirap",
+      "high fructose corn syrup",
+      "hfcs"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "Kopplat till fetma, typ 2-diabetes, fettlever och hjärt-kärlsjukdom. Metaboliseras annorlunda än socker.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": [
+      "Läsk",
+      "Godis",
+      "Bröd",
+      "Frukostflingor",
+      "Fruktjuice",
+      "Såser"
+    ]
+  },
+  {
+    "id": "TRANS_FAT",
+    "standard_name": "Delvis härdat fett / Transfetter",
+    "search_terms": [
+      "delvis härdat fett",
+      "härdat vegetabiliskt fett",
+      "transfett",
+      "transfetter",
+      "partially hydrogenated oils",
+      "trans fats"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "Kraftigt kopplat till hjärt-kärlsjukdom. Förbjudet i USA sedan 2020 och begränsat i många EU-länder.",
+    "banned_in": ["USA", "Canada", "Denmark"],
+    "eu_warning_required": false,
+    "found_in": ["Margarin", "Kakor", "Chips", "Snabbmat", "Fryst pizza"]
+  },
+  {
+    "id": "SODIUM_BENZOATE_VC",
+    "standard_name": "Natriumbensoat (E 211) + C-vitamin",
+    "search_terms": [
+      "natriumbensoat och c-vitamin",
+      "e211 + e300",
+      "sodium benzoate + vitamin c"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "När E211 kombineras med askorbinsyra (vitamin C) bildas bensen, en starkt cancerframkallande kemikalie.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Läsk", "Energidrycker", "Fruktdrycker"]
+  },
+  {
+    "id": "TBHQ_HIGH_TEMP",
+    "standard_name": "Upphettad TBHQ (E 319)",
+    "search_terms": [
+      "upphettad tbhq",
+      "tbhq i friterade produkter",
+      "tbhq in fried products"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "TBHQ (E319) bryts ned till farliga föreningar vid upphettning. Extra riskabelt i friterade produkter.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Pommes frites", "Friterade snacks", "Friterade snabbmat"]
+  },
+  {
+    "id": "TITANIUM_DIOXIDE",
+    "standard_name": "Titandioxid (E 171)",
+    "search_terms": [
+      "titandioxid",
+      "e171",
+      "e 171",
+      "titanium dioxide",
+      "ci 77891"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "Kan inte längre anses säkert enligt EFSA. Förbjudet i EU sedan 2022 pga risk för DNA-skador.",
+    "banned_in": ["EU"],
+    "eu_warning_required": false,
+    "found_in": ["Vit choklad", "Tuggummi", "Godis", "Bageriprodukter"]
+  },
+  {
+    "id": "PROPYLENE_GLYCOL",
+    "standard_name": "Propylenglykol (E 1520)",
+    "search_terms": ["propylenglykol", "e1520", "e 1520", "propylene glycol"],
+    "category": "harmful_ingredient",
+    "risk_level": "medium",
+    "risk_reason": "Höga doser kan orsaka njur- och leverproblem. Ofta dold i 'naturliga aromer'.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Salladsdressingar", "Bakverk", "Smaksatta produkter"]
+  },
+  {
+    "id": "CARMINE",
+    "standard_name": "Karmin (E 120)",
+    "search_terms": [
+      "karmin",
+      "kochenill",
+      "e120",
+      "e 120",
+      "carmine",
+      "cochineal"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "low",
+    "risk_reason": "Framställs från krossade insekter. Inte veganskt. Kan utlösa anafylaktiska reaktioner.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Yoghurt", "Juice", "Godis", "Läsk"]
+  },
+  {
+    "id": "PALM_OIL",
+    "standard_name": "Palmolja / Palmfett",
+    "search_terms": [
+      "palmolja",
+      "palmfett",
+      "vegetabiliskt fett (palm)",
+      "palm oil",
+      "palmkärnolja"
+    ],
+    "category": "environmental_concern",
+    "risk_level": "medium",
+    "risk_reason": "Stor miljöbov – drivande för avskogning. Innehåller ofta industriella föroreningar.",
+    "env_impact": "critical",
+    "found_in": ["Margarin", "Nutella", "Kex", "Chips", "Choklad"]
+  },
+  {
+    "id": "SOYBEAN_OIL",
+    "standard_name": "Delvis härdad sojaolja",
+    "search_terms": [
+      "delvis härdad sojaolja",
+      "partially hydrogenated soybean oil"
+    ],
+    "category": "environmental_concern",
+    "risk_level": "medium",
+    "risk_reason": "Den härdade varianten innehåller transfetter. Kopplad till avskogning i Sydamerika.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Salladsdressingar", "Margarin", "Snacksprodukter"]
+  },
+  {
+    "id": "E385",
+    "standard_name": "Kalciumdinatrium-EDTA (E 385)",
+    "search_terms": [
+      "kalciumdinatrium-edta",
+      "edta",
+      "e385",
+      "e 385",
+      "calcium disodium edta"
+    ],
+    "category": "preservative",
+    "risk_level": "low",
+    "risk_reason": "Kan störa mineralabsorptionen (zink, järn, kalcium) vid högt intag.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Konserver", "Salladsdressingar", "Majonnäs"]
+  },
+  {
+    "id": "E415",
+    "standard_name": "Xantangummi (E 415)",
+    "search_terms": ["xantangummi", "e415", "e 415", "xanthan gum"],
+    "category": "thickener",
+    "risk_level": "low",
+    "risk_reason": "Kan orsaka gasbildning och magbesvär hos känsliga individer.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Glutenfria produkter", "Salladsdressingar", "Glass"]
+  },
+  {
+    "id": "ARTIFICIAL_FLAVORS",
+    "standard_name": "Konstgjorda aromer / Aromämnen",
+    "search_terms": [
+      "konstgjord arom",
+      "konstgjorda aromer",
+      "artificiell arom",
+      "aromämnen",
+      "artificial flavors"
+    ],
+    "category": "harmful_ingredient",
+    "risk_level": "low",
+    "risk_reason": "Vag beteckning som kan dölja hundratals kemikalier.",
+    "banned_in": [],
+    "eu_warning_required": false,
+    "found_in": ["Processade livsmedel", "Läsk", "Godis"]
+  },
+  {
+    "id": "MSG_HIDDEN",
+    "standard_name": "Dolda källor till glutamat (t.ex. jästextrakt)",
+    "search_terms": ["jästextrakt", "hydrolyserat protein", "yeast extract"],
+    "category": "flavor_enhancer",
+    "risk_level": "low",
+    "risk_reason": "Innehåller glutamat liknande MSG men behöver inte deklareras som MSG.",
+    "found_in": ["Chips", "Buljonger", "Soppor"]
+  },
+  {
+    "id": "ACRYLAMIDE",
+    "standard_name": "Akrylamid",
+    "search_terms": ["akrylamid", "acrylamide"],
+    "category": "harmful_ingredient",
+    "risk_level": "high",
+    "risk_reason": "Processkontaminant. Klassificeras som troligen cancerframkallande.",
+    "found_in": ["Chips", "Pommes frites", "Kaffe", "Knäckebröd"]
+  },
+  {
+    "id": "BEEF",
+    "standard_name": "Nötkött / Oxkött",
+    "search_terms": ["nötkött", "oxkött", "beef"],
+    "category": "high_carbon_footprint",
+    "risk_level": "high",
+    "env_impact": "critical",
+    "risk_reason": "En av de mest klimatskadliga matingredienserna pga metanutsläpp och landanvändning.",
+    "found_in": ["Charkuteri", "Fryst mat", "Snabbmat", "Buljonger"]
+  },
+  {
+    "id": "LAMB_MUTTON",
+    "standard_name": "Lammkött / Fårkött",
+    "search_terms": ["lammkött", "fårkött", "lamb", "mutton"],
+    "category": "high_carbon_footprint",
+    "risk_level": "high",
+    "env_impact": "critical",
+    "risk_reason": "Näst högsta klimatpåverkan efter nötkött pga metanproduktion vid idissling.",
+    "found_in": ["Kebab", "Lammprodukter"]
+  },
+  {
+    "id": "DARK_CHOCOLATE_COCOA",
+    "standard_name": "Kakao / Kakaomassa / Kakaosmör",
+    "search_terms": ["kakao", "kakaomassa", "kakaosmör", "cocoa", "cacao"],
+    "category": "deforestation_driver",
+    "risk_level": "medium",
+    "env_impact": "high",
+    "risk_reason": "Kakaoodling är en primär drivkraft för avskogning i Västafrika.",
+    "found_in": ["Choklad", "Glass", "Bakverk"]
+  },
+  {
+    "id": "FARMED_SHRIMP",
+    "standard_name": "Odlad räka / Jätteräka (t.ex. Scampi)",
+    "search_terms": [
+      "odlad räka",
+      "jätteräka",
+      "scampi",
+      "farmed shrimp",
+      "tiger prawns"
+    ],
+    "category": "deforestation_driver",
+    "risk_level": "high",
+    "env_impact": "critical",
+    "risk_reason": "Ledande orsak till mangroveförstörelse. Högt koldioxidavtryck.",
+    "found_in": ["Skaldjursprodukter", "Sushi", "Snabbmat"]
+  },
+  {
+    "id": "PALM_KERNEL_OIL",
+    "standard_name": "Palmkärnolja",
+    "search_terms": ["palmkärnolja", "palm kernel oil", "pko"],
+    "category": "deforestation_driver",
+    "risk_level": "high",
+    "env_impact": "critical",
+    "risk_reason": "Kopplad till kraftig avskogning av regnskog i Sydostasien.",
+    "found_in": ["Margarin", "Kex", "Chokladprodukter"]
+  },
+  {
+    "id": "SOY_PROTEIN_ISOLATE",
+    "standard_name": "Sojaproteinisolat / Soja",
+    "search_terms": [
+      "sojaproteinisolat",
+      "soja",
+      "sojabönor",
+      "soy protein isolate"
+    ],
+    "category": "deforestation_driver",
+    "risk_level": "medium",
+    "env_impact": "high",
+    "risk_reason": "Sojaodling driver avskogning i Amazonas, främst som djurfoder.",
+    "found_in": ["Köttsubstitut", "Proteinbarer"]
+  },
+  {
+    "id": "COFFEE_NON_CERTIFIED",
+    "standard_name": "Kaffe / Kaffeextrakt",
+    "search_terms": ["kaffe", "kaffeextrakt", "coffee"],
+    "category": "deforestation_driver",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Bidrar till avskogning i tropiska regioner och kräver mycket vatten.",
+    "found_in": ["Kaffe", "Energidrycker"]
+  },
+  {
+    "id": "FARMED_SALMON_TROUT",
+    "standard_name": "Odlad lax / Odlad öring",
+    "search_terms": ["odlad lax", "odlad öring", "atlantlax", "farmed salmon"],
+    "category": "ocean_destruction",
+    "risk_level": "medium",
+    "env_impact": "high",
+    "risk_reason": "Kräver vild fångad fisk som foder. Sprider parasiter till vilda populationer.",
+    "found_in": ["Rökt lax", "Sushi"]
+  },
+  {
+    "id": "FISHMEAL_FISH_OIL",
+    "standard_name": "Fiskmjöl / Fiskolja",
+    "search_terms": ["fiskmjöl", "fiskolja", "fish meal", "fish oil"],
+    "category": "ocean_destruction",
+    "risk_level": "medium",
+    "env_impact": "high",
+    "risk_reason": "Irresponsabelt fiske av foderfisk hotar marina ekosystem.",
+    "found_in": ["Djurfoder", "Kosttillskott"]
+  },
+  {
+    "id": "SUGAR_CANE_NON_CERT",
+    "standard_name": "Socker / Rörsocker",
+    "search_terms": ["socker", "rörsocker", "sugar", "cane sugar"],
+    "category": "deforestation_driver",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Leder till habitatförlust och vattenföroreningar i tropiska länder.",
+    "found_in": ["Godis", "Läsk", "Bakverk"]
+  },
+  {
+    "id": "DAIRY_MILK_CHEESE",
+    "standard_name": "Mejeriprodukter (mjölk, ost, smör)",
+    "search_terms": [
+      "mejeriprodukter",
+      "mjölk",
+      "ost",
+      "smör",
+      "laktos",
+      "kasein",
+      "milk",
+      "dairy"
+    ],
+    "category": "high_carbon_footprint",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Bidrar till metanutsläpp och hög vattenanvändning. Ost har särskilt hög påverkan.",
+    "found_in": ["Ost", "Glass", "Färdigmat"]
+  },
+  {
+    "id": "COTTON_SEED_OIL",
+    "standard_name": "Bomullsfröolja",
+    "search_terms": ["bomullsfröolja", "cottonseed oil"],
+    "category": "chemical_pollution",
+    "risk_level": "medium",
+    "env_impact": "high",
+    "risk_reason": "Bomull är kraftigt besprutad. Oljan kan innehålla bekämpningsmedelsrester.",
+    "found_in": ["Chips", "Margarin"]
+  },
+  {
+    "id": "CORN_SYRUP_HFCS_CORN",
+    "standard_name": "Majs / Majsstärkelse / Majssirap",
+    "search_terms": [
+      "majs",
+      "majsstärkelse",
+      "majssirap",
+      "corn",
+      "modified starch"
+    ],
+    "category": "chemical_pollution",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Intensiv majsodling kräver höga mängder konstgödsel och utarmar jordar.",
+    "found_in": ["Chips", "Frukostflingor", "Modifierad stärkelse"]
+  },
+  {
+    "id": "PORK_PIG",
+    "standard_name": "Fläskkött / Griskött",
+    "search_terms": ["fläskkött", "griskött", "skinka", "bacon", "pork"],
+    "category": "high_carbon_footprint",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Genererar metan och kräver sojabaserat foder kopplat till avskogning.",
+    "found_in": ["Bacon", "Korv", "Gelatin"]
+  },
+  {
+    "id": "ALMOND_WATER",
+    "standard_name": "Mandel / Mandelmjölk",
+    "search_terms": ["mandel", "mandelmjölk", "almonds"],
+    "category": "water_intensive",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Extremt vattenkrävande gröda, ofta odlad i torkdrabbade områden.",
+    "found_in": ["Mandelmjölk", "Bakverk", "Nötblandningar"]
+  },
+  {
+    "id": "AVOCADO",
+    "standard_name": "Avokado / Avokadoolja",
+    "search_terms": ["avokado", "avokadoolja", "avocado"],
+    "category": "water_intensive",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Kräver enorma mängder vatten. Boomen leder till illegal avskogning i Mexico.",
+    "found_in": ["Guacamole", "Sallader"]
+  },
+  {
+    "id": "RICE_FLOODED",
+    "standard_name": "Ris / Rismjöl / Risstärkelse",
+    "search_terms": ["ris", "rismjöl", "risstärkelse", "rice"],
+    "category": "high_carbon_footprint",
+    "risk_level": "low",
+    "env_impact": "medium",
+    "risk_reason": "Vattenfyllda risfält producerar stora mängder metan via bakterier.",
+    "found_in": ["Risnudlar", "Rismjöl", "Frukostprodukter"]
+  }
+]
