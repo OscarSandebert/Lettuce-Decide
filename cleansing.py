@@ -1,8 +1,8 @@
-from google import genai
+from openai import OpenAI
 import os
 
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-client = genai.Client(api_key=GEMINI_API_KEY)
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def correct_ingredient(user_input):
 
@@ -18,12 +18,12 @@ Ingen förklaring.
 Input: {user_input}
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
-        contents=prompt,
-        config={
-            "temperature": 0
-        }
-    ) 
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0
+    )
 
-    return [ingredient.strip().lower() for ingredient in response.text.strip().split(',')]
+    return [ingredient.strip().lower() for ingredient in response.choices[0].message.content.strip().split(',')]
