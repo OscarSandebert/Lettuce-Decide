@@ -461,10 +461,17 @@
           d.source !== "DABAS"
             ? `
             <p>
+              <strong>Miljödata:</strong><br>
+              Denna vara släpper ut ${d.co2_total ?? "okänt antal"} kg CO₂-ekvivalenter
+              och har Eco-Score ${(d.ecoscore_grade || "?").toUpperCase()}.
+            </p>
+
+            <p>
               <strong>Eco-Score:</strong>
               ${(d.ecoscore_grade || "?").toUpperCase()}
               (${d.ecoscore_score ?? "-"})
             </p>
+
             ${
               d.category
                 ? `<p><strong>Kategori:</strong> ${d.category}</p>`
