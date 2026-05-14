@@ -245,10 +245,14 @@
         margin-bottom: 4px;
       }
 
-      .nav-item.active {
-        color: #0a7;
-        background: transparent;
-      }
+    .nav-item.active {
+      color: #0a7;
+      background: transparent;
+    }
+
+    .nav-item:hover {
+      background: transparent;
+    }
 
       .favorite-btn.active {
         background: #d62828;
@@ -590,20 +594,20 @@
     </script>
 
     <nav class="bottom-nav">
-      <button class="nav-item active">
+      <a href="/" class="nav-item active">
         <span>&#127968;</span>
         <small>Hem</small>
-      </button>
+      </a>
 
       <a href="/saved" class="nav-item">
         <span>&#10084;&#65039;</span>
         <small>Sparat</small>
       </a>
 
-      <button class="nav-item">
+      <a href="/info" class="nav-item">
         <span>&#8505;&#65039;</span>
         <small>Info</small>
-      </button>
+      </a>
     </nav>
   </body>
 </html>
