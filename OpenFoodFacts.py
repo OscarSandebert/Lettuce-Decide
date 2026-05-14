@@ -21,5 +21,7 @@ def getProduct(gtin):
 
     return data
     
-#pb = getProduct("737628064502")
-#print(pb)
+# pb = getProduct("05711953041945")
+# print(pb)
+# print(pb["product"]["ecoscore_data"]["agribalyse"]["co2_total"])
+# print(pb["product"]["ecoscore_grade"])
