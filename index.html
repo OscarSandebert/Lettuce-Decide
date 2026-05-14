@@ -72,8 +72,7 @@
       line-height: 1.45;
     }
 
-    .scanner-card,
-    .photo-card {
+    .scanner-card {
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 22px;
@@ -89,9 +88,15 @@
       display: block;
       width: 100%;
       aspect-ratio: 4 / 3;
+      max-height: calc(100vh - 260px);
       border-radius: 16px;
       background: #050806;
       object-fit: cover;
+    }
+
+    video.success {
+      border: 4px solid var(--green-light);
+      box-shadow: 0 0 20px var(--green-light);
     }
 
     .actions {
@@ -124,24 +129,18 @@
       background: var(--green);
     }
 
-    #takePhoto {
+    #scanAgain {
       width: 100%;
       max-width: 260px;
       background: var(--green-light);
     }
 
-    #takePhoto:hover {
+    #scanAgain:hover {
       background: var(--green);
     }
 
     canvas {
       display: none;
-    }
-
-    .photo-card {
-      margin-top: 18px;
-      padding: 14px;
-      text-align: left;
     }
 
     h2 {
@@ -162,13 +161,6 @@
       color: var(--muted);
       font-size: 15px;
       line-height: 1.45;
-    }
-
-    #downloadLink {
-      margin-top: 14px;
-      color: var(--green-dark);
-      background: var(--surface-soft);
-      box-shadow: none;
     }
 
     .popup-overlay {
@@ -308,21 +300,12 @@
       <video id="video" autoplay playsinline></video>
 
       <div class="actions">
-        <button id="takePhoto">Ta bild</button>
+        <button id="scanAgain">Skanna ny produkt</button>
       </div>
+      <div id="result"></div>
     </section>
 
     <canvas id="canvas"></canvas>
-
-    <section id="photoCard" class="photo-card" style="display: none;">
-      <h2>Din bild</h2>
-      <img id="photo" alt="Tagen bild visas har" />
-      <div id="result"></div>
-
-      <a id="downloadLink" download="bild.jpg" style="display: none;">
-        Spara bild
-      </a>
-    </section>
 
     <div id="popupOverlay" class="popup-overlay">
       <div class="popup-box">
@@ -339,14 +322,14 @@
 
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
-    const photoCard = document.getElementById("photoCard");
-    const photo = document.getElementById("photo");
-    const takePhotoButton = document.getElementById("takePhoto");
-    const downloadLink = document.getElementById("downloadLink");
+    const scanAgainButton = document.getElementById("scanAgain");
     const resultElement = document.getElementById("result");
     const popupOverlay = document.getElementById("popupOverlay"); ///Pop-up
     const popupContent = document.getElementById("popupContent"); ///Pop-up
     const closePopupButton = document.getElementById("closePopup");  ///Pop-up
+
+    scanAgainButton.style.display = "none";
+    let doneScanning = false;
 
     function openPopup(html) {
       popupContent.innerHTML = html;
@@ -461,9 +444,11 @@
       const res = await fetch(`/api/lookup/${barcode}`);
       if (!res.ok) {
         openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+        resultElement.textContent = null;
         return;
       }
 
+      video.classList.add("success")
       const d = await res.json();
 
       let favoriteIcon = "🤍";
@@ -519,6 +504,8 @@
         </div>
       `);
 
+      resultElement.textContent = null;
+
       attachFavoriteButton(barcode);
     }
 
@@ -539,36 +526,43 @@
       }
     }
 
-    takePhotoButton.addEventListener("click", async () => {
-      const context = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    async function startScanning() {
+      resultElement.textContent = "Rikta kameran mot en streckkod...";
 
-      const imageDataUrl = canvas.toDataURL("image/jpeg", 0.95);
-      photoCard.style.display = "block";
-      photo.src = imageDataUrl;
-      downloadLink.href = imageDataUrl;
-      downloadLink.download = "bild.jpg";
-      downloadLink.style.display = "inline-flex";
+      await video.play();
 
-      try {
-        const result = await reader.decodeFromImageUrl(imageDataUrl);
-        let barcode = result.getText().trim();
-        if (barcode.length === 13) {
-          barcode = "0" + barcode
+      const result = await reader.decodeFromConstraints(
+        {
+          video: {
+            facingMode: {ideal: "environment"},
+            width: {ideal: 1920},
+            height: {ideal: 1080}
+          },
+          audio: false
+        },
+        video,
+        async (result, error) => {
+          if (!result || doneScanning) return;
+
+          doneScanning = true;
+
+          let barcode = result.getText().trim();
+          await lookupBarcode(barcode);
+          scanAgainButton.style.display = "inline-block"
         }
+      )
+    }
 
-        await lookupBarcode(barcode);
-      } catch (err) {
-        openPopup(`
-          <h2>Ingen streckkod hittades</h2>
-          <p>Försök igen med bättre ljus eller tydligare fokus.</p>
-        `);
-      }
-    });
+    scanAgainButton.addEventListener("click", () => {
+      doneScanning = false;
+      scanAgainButton.style.display = "none";
+      resultElement.textContent = "Rikta kameran mot en streckkod...";
+      video.classList.remove("success");
+    })
 
-    startCamera();
+    await startCamera();
+    await startScanning();
+
   </script>
 
   <nav class="bottom-nav">
