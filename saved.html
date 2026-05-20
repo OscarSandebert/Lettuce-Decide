@@ -167,62 +167,96 @@
     <div id="favoritesContainer"></div>
 
   <script>
-  const container =
-      document.getElementById("favoritesContainer");
+    const container =
+        document.getElementById("favoritesContainer");
 
-  const favorites =
-      JSON.parse(localStorage.getItem("favorites")) || [];
+    async function loadFavorites() {
 
-  async function loadFavorites() {
-      if (favorites.length === 0) {
-          container.innerHTML =
-              "<p>Inga sparade produkter.</p>";
-          return;
-      }
-      for (const barcode of favorites) {
-          try {
-              const res = await fetch(
-                  `/api/lookup/${barcode}`
-              );
-              if (!res.ok) {
-                console.error(`Could not load ${barcode}`);
-                continue;
-              }
-              const product = await res.json();
-              const card = document.createElement("div");
-              card.className = "product-card";
-              card.innerHTML = `
-                  <h2>${product.name}</h2>
-                  <p>${product.brand}</p>
-                  <p>Streckkod: ${barcode}</p>
-                  <button onclick="removeFavorite('${barcode}')">
-                    Ta bort
-                  </button>
-              `;
-              container.appendChild(card);
-          } catch (err) {
-              console.error(err);
-          }
-      }
-  }
-  loadFavorites();
+        container.innerHTML = "";
 
-  function removeFavorite(barcode) {
+        try {
 
-    let favorites =
-        JSON.parse(localStorage.getItem("favorites")) || [];
+            const favoritesRes = await fetch("/api/favorites", {
+                credentials: "include"
+            });
 
-    favorites =
-        favorites.filter(item => item !== barcode);
+            if (!favoritesRes.ok) {
+                container.innerHTML =
+                    "<p>Kunde inte hämta sparade produkter.</p>";
+                return;
+            }
 
-    localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
-    );
+            const favorites = await favoritesRes.json();
 
-    location.reload();
-  }
-  </script>
+            if (favorites.length === 0) {
+                container.innerHTML =
+                    "<p>Inga sparade produkter.</p>";
+                return;
+            }
+
+            for (const barcode of favorites) {
+
+                try {
+
+                    const res = await fetch(
+                        `/api/lookup/${barcode}`
+                    );
+
+                    if (!res.ok) {
+                        console.error(`Could not load ${barcode}`);
+                        continue;
+                    }
+
+                    const product = await res.json();
+
+                    const card = document.createElement("div");
+
+                    card.className = "product-card";
+
+                    card.innerHTML = `
+                        <h2>${product.name}</h2>
+                        <p>${product.brand}</p>
+                        <p>Streckkod: ${barcode}</p>
+
+                        <button onclick="removeFavorite('${barcode}')">
+                            Ta bort
+                        </button>
+                    `;
+
+                    container.appendChild(card);
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+        } catch (err) {
+
+            console.error(err);
+
+            container.innerHTML =
+                "<p>Något gick fel.</p>";
+        }
+    }
+
+    async function removeFavorite(barcode) {
+
+        try {
+
+            await fetch(`/api/favorites/${barcode}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+
+            loadFavorites();
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    loadFavorites();
+    </script>
 
     <div id="userBar" style="margin-top:20px;"></div>
   </main>
