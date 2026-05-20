@@ -164,97 +164,186 @@
 <body>
   <main class="page">
     <h1>Sparade Produkter</h1>
-      <div class="list-section" style="margin-bottom: 40px;">
-          <h2 style="text-align: left; color: #0a7;">🛒 Min Inköpslista</h2>
-          <div id="groceryContainer"></div>
-      </div>
+<div class="list-section" style="margin-bottom: 40px;">
+    <h2 style="text-align: left; color: #0a7;">🛒 Min Inköpslista</h2>
+    <div id="groceryContainer"></div>
+</div>
 
-      <div class="list-section">
-          <h2 style="text-align: left; color: #d62828;">❤️ Mina Favoriter</h2>
-          <div id="favoritesContainer"></div>
-      </div>
-      <script>
-        const favoritesContainer = document.getElementById("favoritesContainer");
-        const groceryContainer = document.getElementById("groceryContainer");
-        
-        function createProductCard(product, barcode, type) {
-            const card = document.createElement("div");
-            card.className = "product-card";
-            
-            const deleteFunction = type === 'grocery' 
-                ? `removeGrocery('${barcode}')` 
-                : `removeFavorite('${barcode}')`;
-        
-            card.innerHTML = `
-                <h2>${product.name}</h2>
-                <p>${product.brand}</p>
-                <p>Streckkod: ${barcode}</p>
-                <button onclick="${deleteFunction}" style="background-color: #e63946;">
-                  Ta bort
-                </button>
-            `;
-            return card;
+<div class="list-section">
+    <h2 style="text-align: left; color: #d62828;">❤️ Mina Favoriter</h2>
+    <div id="favoritesContainer"></div>
+</div>
+
+<script>
+
+const favoritesContainer =
+    document.getElementById("favoritesContainer");
+
+const groceryContainer =
+    document.getElementById("groceryContainer");
+
+function createProductCard(product, barcode, type) {
+
+    const card = document.createElement("div");
+
+    card.className = "product-card";
+
+    const deleteFunction =
+        type === "grocery"
+            ? `removeGrocery('${barcode}')`
+            : `removeFavorite('${barcode}')`;
+
+    card.innerHTML = `
+        <h2>${product.name}</h2>
+        <p>${product.brand}</p>
+        <p>Streckkod: ${barcode}</p>
+
+        <button
+            onclick="${deleteFunction}"
+            style="background-color: #e63946;">
+            Ta bort
+        </button>
+    `;
+
+    return card;
+}
+
+async function loadList(apiUrl, containerElement, type) {
+
+    containerElement.innerHTML = "";
+
+    try {
+
+        const listRes = await fetch(apiUrl, {
+            credentials: "include"
+        });
+
+        if (!listRes.ok) {
+
+            containerElement.innerHTML =
+                "<p>Kunde inte ladda listan.</p>";
+
+            return;
         }
-        
-        async function loadList(apiUrl, containerElement, type) {
+
+        const barcodes = await listRes.json();
+
+        if (barcodes.length === 0) {
+
+            containerElement.innerHTML =
+                "<p>Listan är tom.</p>";
+
+            return;
+        }
+
+        for (const barcode of barcodes) {
+
             try {
-                const res = await fetch(apiUrl);
-                if (!res.ok) {
-                    containerElement.innerHTML = "<p>Kunde inte ladda listan.</p>";
-                    return;
+
+                const productRes =
+                    await fetch(`/api/lookup/${barcode}`);
+
+                if (!productRes.ok) {
+                    console.error(`Could not load ${barcode}`);
+                    continue;
                 }
-                
-                const barcodes = await res.json();
-        
-                if (barcodes.length === 0) {
-                    containerElement.innerHTML = "<p>Listan är tom.</p>";
-                    return;
-                }
-        
-                for (const barcode of barcodes) {
-                    try {
-                        const productRes = await fetch(`/api/lookup/${barcode}`);
-                        if (!productRes.ok) continue;
-                        
-                        const product = await productRes.json();
-                        const card = createProductCard(product, barcode, type);
-                        containerElement.appendChild(card);
-                    } catch (err) {
-                        console.error(`Kunde inte ladda produkt ${barcode}:`, err);
-                    }
-                }
+
+                const product =
+                    await productRes.json();
+
+                const card =
+                    createProductCard(product, barcode, type);
+
+                containerElement.appendChild(card);
+
             } catch (err) {
-                console.error(err);
-                containerElement.innerHTML = "<p>Ett fel uppstod.</p>";
+
+                console.error(
+                    `Kunde inte ladda produkt ${barcode}:`,
+                    err
+                );
             }
         }
-        
-        async function initLists() {
-            await loadList("/api/grocery", groceryContainer, "grocery");
-            await loadList("/api/favorites", favoritesContainer, "favorites");
-        }
-        initLists();
-        
-        async function removeFavorite(barcode) {
-            const res = await fetch(`/api/favorites/${barcode}`, {
+
+    } catch (err) {
+
+        console.error(err);
+
+        containerElement.innerHTML =
+            "<p>Ett fel uppstod.</p>";
+    }
+}
+
+async function initLists() {
+
+    await loadList(
+        "/api/grocery",
+        groceryContainer,
+        "grocery"
+    );
+
+    await loadList(
+        "/api/favorites",
+        favoritesContainer,
+        "favorites"
+    );
+}
+
+async function removeFavorite(barcode) {
+
+    try {
+
+        const res = await fetch(
+            `/api/favorites/${barcode}`,
+            {
                 method: "DELETE",
                 credentials: "include"
-            });
-            if (res.ok) {
-                location.reload();
             }
+        );
+
+        if (res.ok) {
+            loadList(
+                "/api/favorites",
+                favoritesContainer,
+                "favorites"
+            );
         }
-        
-        async function removeGrocery(barcode) {
-            const res = await fetch(`/api/grocery/${barcode}`, {
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+async function removeGrocery(barcode) {
+
+    try {
+
+        const res = await fetch(
+            `/api/grocery/${barcode}`,
+            {
                 method: "DELETE",
                 credentials: "include"
-            });
-            if (res.ok) {
-                location.reload();
             }
+        );
+
+        if (res.ok) {
+            loadList(
+                "/api/grocery",
+                groceryContainer,
+                "grocery"
+            );
         }
-        </script>
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+initLists();
+
+</script>
 
     <div id="userBar" style="margin-top:20px;"></div>
   </main>
