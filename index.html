@@ -488,6 +488,8 @@
 
         const ecoScoreHtml =
           d.source !== "DABAS"
+            
+          ? hasEnvironmentalData
             ? `
             <p>
               <strong>Utsläppt antal CO₂-ekvivalenter:</strong>
@@ -501,11 +503,17 @@
             </p>
 
             ${
-              d.category
+              d.category && d.category !== "?" && d.category !== "Unknown"
                 ? `<p><strong>Kategori:</strong> ${d.category}</p>`
                 : ""
             }
-          `
+            `
+            : `
+                <p>
+                  <strong>Miljödata:</strong><br>
+                  Kunde inte hitta miljödata för produkten.
+                </p>
+            `
             : "";
 
         openPopup(`
