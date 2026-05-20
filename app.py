@@ -1,5 +1,5 @@
 import os
-import sqlite3
+import psycopg2
 from functools import wraps
 from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, send_from_directory, session, url_for, request
@@ -14,21 +14,24 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-only-change-me")
-DB_PATH = "/var/data/database.db"
+
+def get_db():
+    return psycopg2.connect(os.environ["DATABASE_URL"])
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS favorites (
-        user_id TEXT NOT NULL,
-        barcode TEXT NOT NULL,
-        UNIQUE(user_id, barcode)
-    )
-    """)
+        CREATE TABLE IF NOT EXISTS favorites (
+            user_id TEXT NOT NULL,
+            barcode TEXT NOT NULL,
+            UNIQUE(user_id, barcode)
+        )
+        """)
 
     conn.commit()
+    cursor.close()
     conn.close()
 
 init_db()
@@ -181,16 +184,16 @@ def get_favorites():
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT barcode FROM favorites WHERE user_id = ?",
-        (user_id,)
-    )
+            "SELECT barcode FROM favorites WHERE user_id = %s",
+            (user_id,)
+        )
 
     rows = cursor.fetchall()
-
+    cursor.close()
     conn.close()
 
     favorites = [row[0] for row in rows]
@@ -211,15 +214,20 @@ def add_favorite():
     data = request.get_json()
     barcode = data["barcode"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT OR IGNORE INTO favorites (user_id, barcode) VALUES (?, ?)",
+        """
+        INSERT INTO favorites (user_id, barcode)
+        VALUES (%s, %s)
+        ON CONFLICT DO NOTHING
+        """,
         (user_id, barcode)
     )
 
     conn.commit()
+    cursor.close()
     conn.close()
 
     return jsonify({"success": True})
@@ -234,15 +242,16 @@ def remove_favorite(barcode):
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute(
-        "DELETE FROM favorites WHERE user_id = ? AND barcode = ?",
+        "DELETE FROM favorites WHERE user_id = %s AND barcode = %s",
         (user_id, barcode)
     )
 
     conn.commit()
+    cursor.close()
     conn.close()
 
     return jsonify({"success": True})
