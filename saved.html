@@ -166,6 +166,23 @@
     <h1>Sparade Produkter</h1>
 <div class="list-section" style="margin-bottom: 40px;">
     <h2 style="text-align: left; color: #0a7;">🛒 Min Inköpslista</h2>
+    <div
+        id="co2Summary"
+        style="
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: left;
+        "
+    >
+        <h2 style="margin-top: 0;">🌍 Total klimatpåverkan</h2>
+
+        <p id="co2Value" style="font-size: 20px; font-weight: bold;">
+            Laddar...
+        </p>
+    </div>
     <div id="groceryContainer"></div>
 </div>
 
@@ -175,7 +192,10 @@
 </div>
 
 <script>
+const co2Value =
+    document.getElementById("co2Value");
 
+let totalCo2 = 0;
 const favoritesContainer =
     document.getElementById("favoritesContainer");
 
@@ -209,7 +229,9 @@ function createProductCard(product, barcode, type) {
 }
 
 async function loadList(apiUrl, containerElement, type) {
-
+    if (type === "grocery") {
+        totalCo2 = 0;
+    }
     containerElement.innerHTML = "";
 
     try {
@@ -250,6 +272,13 @@ async function loadList(apiUrl, containerElement, type) {
 
                 const product =
                     await productRes.json();
+                if (
+                      type === "grocery" &&
+                      product.co2_total &&
+                      !isNaN(product.co2_total)
+                  ) {
+                      totalCo2 += Number(product.co2_total);
+                  }
 
                 const card =
                     createProductCard(product, barcode, type);
@@ -272,6 +301,11 @@ async function loadList(apiUrl, containerElement, type) {
         containerElement.innerHTML =
             "<p>Ett fel uppstod.</p>";
     }
+    if (type === "grocery") {
+
+          co2Value.innerHTML =
+              `${totalCo2.toFixed(2)} kg CO₂e`;
+      }
 }
 
 async function initLists() {
@@ -346,6 +380,7 @@ initLists();
 </script>
 
     <div id="userBar" style="margin-top:20px;"></div>
+
   </main>
 
   <!-- Bottom navigation -->
