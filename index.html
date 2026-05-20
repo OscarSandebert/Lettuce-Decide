@@ -404,6 +404,53 @@
       }
       window.toggleFavorite = toggleFavorite;
 
+      async function addGrocery(barcode) {
+        await fetch("/api/grocery", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ barcode }),
+        });
+      }
+
+      async function removeGrocery(barcode) {
+        await fetch(`/api/grocery/${barcode}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+      }
+
+      async function inGroceryList(barcode) {
+        const res = await fetch("/api/grocery", {
+          credentials: "include",
+        });
+        const groceryList = await res.json();
+        return groceryList.includes(barcode);
+      }
+
+      async function toggleGrocery(barcode, button) {
+        const currentlyInList = await inGroceryList(barcode);
+
+        if (currentlyInList) {
+          await removeGrocery(barcode);
+        } else {
+          await addGrocery(barcode);
+        }
+
+        if (button) {
+          if (!currentlyInList) {
+            button.innerHTML = "🛒 På listan";
+            button.classList.add("active");
+          } else {
+            button.innerHTML = "➕ Köp";
+            button.classList.remove("active");
+          }
+        }
+      }
+      window.toggleGrocery = toggleGrocery;
+
       async function shareProduct(barcode) {
         const res = await fetch(`/api/lookup/${barcode}`);
         const d = await res.json();
@@ -470,6 +517,20 @@
         });
       }
 
+      async function attachGroceryButton(barcode) {
+        const groceryButton = document.querySelector(".grocery-btn");
+        groceryButton.addEventListener("click", async () => {
+          const res = await fetch("/api/me", { credentials: "include" });
+          if (!res.ok) {
+            openPopup(`
+              <h2>Logga in</h2>
+              <p>Du måste logga in för att använda inköpslistan.</p>`);
+            return;
+          }
+          await toggleGrocery(barcode, groceryButton);
+        });
+      }
+
       async function lookupBarcode(barcode) {
         resultElement.textContent = "Söker produkt...";
 
@@ -492,6 +553,13 @@
         let favoriteIcon = "🤍";
         try {
           favoriteIcon = (await isFavorite(barcode)) ? "❤️" : "🤍";
+        } catch (err) {
+          console.error(err);
+        }
+
+        let groceryIcon = "🛒";
+        try {
+          groceryIcon = (await inGroceryList(barcode)) ? "➕" : "🛒";
         } catch (err) {
           console.error(err);
         }
@@ -562,6 +630,10 @@
             ${favoriteIcon} Favorite
           </button>
 
+          <button class="grocery-btn" data-barcode="${barcode}">
+            ${groceryIcon} Lägg till
+          </button>
+
           <button
             class="share-btn"
             onclick="shareProduct('${barcode}')">
@@ -574,6 +646,8 @@
         resultElement.textContent = null;
 
         attachFavoriteButton(barcode);
+
+        attachGroceryButton(barcode);
       }
 
       async function startCamera() {
@@ -633,17 +707,22 @@
 
     <nav class="bottom-nav">
       <a href="/" class="nav-item active">
-        <span>&#127968;</span>
+        <span>🏠</span>
         <small>Hem</small>
       </a>
-
+    
       <a href="/saved" class="nav-item">
-        <span>&#10084;&#65039;</span>
+        <span>🛒</span>
+        <small>Inköpslista</small>
+      </a>
+    
+      <a href="/saved" class="nav-item">
+        <span>❤️</span>
         <small>Sparat</small>
       </a>
-
+    
       <a href="/info" class="nav-item">
-        <span>&#8505;&#65039;</span>
+        <span>ℹ️</span>
         <small>Info</small>
       </a>
     </nav>

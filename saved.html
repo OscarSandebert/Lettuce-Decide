@@ -164,65 +164,97 @@
 <body>
   <main class="page">
     <h1>Sparade Produkter</h1>
-    <div id="favoritesContainer"></div>
+      <div class="list-section" style="margin-bottom: 40px;">
+          <h2 style="text-align: left; color: #0a7;">🛒 Min Inköpslista</h2>
+          <div id="groceryContainer"></div>
+      </div>
 
-  <script>
-  const container =
-      document.getElementById("favoritesContainer");
-
-  const favorites =
-      JSON.parse(localStorage.getItem("favorites")) || [];
-
-  async function loadFavorites() {
-      if (favorites.length === 0) {
-          container.innerHTML =
-              "<p>Inga sparade produkter.</p>";
-          return;
-      }
-      for (const barcode of favorites) {
-          try {
-              const res = await fetch(
-                  `/api/lookup/${barcode}`
-              );
-              if (!res.ok) {
-                console.error(`Could not load ${barcode}`);
-                continue;
-              }
-              const product = await res.json();
-              const card = document.createElement("div");
-              card.className = "product-card";
-              card.innerHTML = `
-                  <h2>${product.name}</h2>
-                  <p>${product.brand}</p>
-                  <p>Streckkod: ${barcode}</p>
-                  <button onclick="removeFavorite('${barcode}')">
-                    Ta bort
-                  </button>
-              `;
-              container.appendChild(card);
-          } catch (err) {
-              console.error(err);
-          }
-      }
-  }
-  loadFavorites();
-
-  function removeFavorite(barcode) {
-
-    let favorites =
-        JSON.parse(localStorage.getItem("favorites")) || [];
-
-    favorites =
-        favorites.filter(item => item !== barcode);
-
-    localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
-    );
-
-    location.reload();
-  }
-  </script>
+      <div class="list-section">
+          <h2 style="text-align: left; color: #d62828;">❤️ Mina Favoriter</h2>
+          <div id="favoritesContainer"></div>
+      </div>
+      <script>
+        const favoritesContainer = document.getElementById("favoritesContainer");
+        const groceryContainer = document.getElementById("groceryContainer");
+        
+        function createProductCard(product, barcode, type) {
+            const card = document.createElement("div");
+            card.className = "product-card";
+            
+            const deleteFunction = type === 'grocery' 
+                ? `removeGrocery('${barcode}')` 
+                : `removeFavorite('${barcode}')`;
+        
+            card.innerHTML = `
+                <h2>${product.name}</h2>
+                <p>${product.brand}</p>
+                <p>Streckkod: ${barcode}</p>
+                <button onclick="${deleteFunction}" style="background-color: #e63946;">
+                  Ta bort
+                </button>
+            `;
+            return card;
+        }
+        
+        async function loadList(apiUrl, containerElement, type) {
+            try {
+                const res = await fetch(apiUrl);
+                if (!res.ok) {
+                    containerElement.innerHTML = "<p>Kunde inte ladda listan.</p>";
+                    return;
+                }
+                
+                const barcodes = await res.json();
+        
+                if (barcodes.length === 0) {
+                    containerElement.innerHTML = "<p>Listan är tom.</p>";
+                    return;
+                }
+        
+                for (const barcode of barcodes) {
+                    try {
+                        const productRes = await fetch(`/api/lookup/${barcode}`);
+                        if (!productRes.ok) continue;
+                        
+                        const product = await productRes.json();
+                        const card = createProductCard(product, barcode, type);
+                        containerElement.appendChild(card);
+                    } catch (err) {
+                        console.error(`Kunde inte ladda produkt ${barcode}:`, err);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                containerElement.innerHTML = "<p>Ett fel uppstod.</p>";
+            }
+        }
+        
+        async function initLists() {
+            await loadList("/api/grocery", groceryContainer, "grocery");
+            await loadList("/api/favorites", favoritesContainer, "favorites");
+        }
+        initLists();
+        
+        async function removeFavorite(barcode) {
+            const res = await fetch(`/api/favorites/${barcode}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            if (res.ok) {
+                location.reload();
+            }
+        }
+        
+        async function removeGrocery(barcode) {
+            const res = await fetch(`/api/grocery/${barcode}`, {
+                method: "DELETE",
+                credentials: "include"
+            });
+            if (res.ok) {
+                location.reload();
+            }
+        }
+        </script>
 
     <div id="userBar" style="margin-top:20px;"></div>
   </main>
