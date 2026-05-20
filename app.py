@@ -15,7 +15,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-only-change-me")
 
-def init_db():
+def initDatabase():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -30,7 +30,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+initDatabase()
 
 oauth = OAuth(app)
 oauth.register(
@@ -42,7 +42,7 @@ oauth.register(
 )
 
 
-def login_required(view):
+def loginRequired(view):
     @wraps(view)
     def wrapper(*args, **kwargs):
         if "user" not in session:
@@ -93,7 +93,7 @@ def me():
 
 
 @app.route("/saved")
-@login_required
+@loginRequired
 def saved():
     return send_from_directory(".", "saved.html")
 
@@ -125,7 +125,7 @@ def lookup(barcode):
         data["name"] = dabas_result.get("Hyllkantstext", "Okänt namn")
         data["brand"] = dabas_result.get("Varumarke", {}).get("Varumarke", "Okänt märke")
         data["raw_ingredients"] = dabas_result.get("Ingrediensforteckning", "Okända ingredienser")
-        data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+        data["ingredients"] = cleansing.correctIngredient(data["raw_ingredients"])
         data["source"] = "DABAS"
 
     if off_result:
@@ -142,9 +142,9 @@ def lookup(barcode):
             data["name"] = product.get("product_name", "Okänt namn")
             data["brand"] = product.get("brands", "Okänt märke")
             data["raw_ingredients"] = product.get("ingredients_text", "Okända ingredienser")
-            data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+            data["ingredients"] = cleansing.correctIngredient(data["raw_ingredients"])
 
-    warnings = lookupIngredients.match_ingredients(data["ingredients"])
+    warnings = lookupIngredients.matchIngredients(data["ingredients"])
     for warning in warnings:
         msg = f"{warning.get("standard_name")}: {warning.get("risk_reason")}\n"
         data.setdefault("warnings", []).append(msg)
@@ -188,7 +188,7 @@ def get_favorites():
 
 
 @app.route("/api/favorites", methods=["POST"])
-def add_favorite():
+def addFavorite():
 
     user = session.get("user")
 

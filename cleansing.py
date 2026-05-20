@@ -4,7 +4,7 @@ import os
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-def correct_ingredient(user_input):
+def correctIngredient(user_input):
 
     prompt = f"""
 Du får en lista med ingrediensnamn med eventuell felstavning.

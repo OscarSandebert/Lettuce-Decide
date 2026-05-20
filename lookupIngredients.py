@@ -1,7 +1,7 @@
 import json
 import os
 
-def match_ingredients(ingredients):
+def matchIngredients(ingredients):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, 'harmfulingredients.json')
     
