@@ -2,16 +2,42 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sparade Produkter</title>
 
     <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 16px;
-      padding-bottom: 100px;
-      background: #f5f5f5;
+      min-height: 100vh;
+      padding: 18px 14px 92px;
+      background: #f4f8ef;
       text-align: center;
+      color: #0f3321;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 18px 0 18px;
+      color: #092819;
+      font-size: 30px;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    h2,
+    p,
+    #userBar {
+      overflow-wrap: anywhere;
     }
     video {
       box-shadow: 0 4px 20px rgba(0,0,0,0.12);
@@ -45,11 +71,6 @@
     }
 
 
-    /* Navigation Panel */
-    body {
-      padding-bottom: 100px;
-    }
-
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -68,24 +89,35 @@
       border-top-right-radius: 20px;
     }
 
-    .nav-item {
-      background: none;
-      border: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 14px;
-      color: #555;
-      cursor: pointer;
-    }
+      .nav-item {
+        min-height: auto;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        color: #555;
+        background: transparent;
+        box-shadow: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 400;
+      }
 
-    .nav-item span {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
+      .nav-item span {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
 
     .nav-item.active {
       color: #0a7;
+      background: transparent;
+    }
+
+    .nav-item:hover {
+      background: transparent;
     }
 
     .scan-button span {
@@ -94,14 +126,43 @@
 
     .product-card {
       background: white;
-      border-radius: 16px;
+      border-radius: 8px;
       padding: 16px;
       margin-bottom: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: left;
+    }
+
+    .product-card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .product-card p {
+      margin: 6px 0;
+      color: #657469;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    @media (min-width: 760px) {
+      body {
+        padding-top: 34px;
+      }
+
+      .page {
+        max-width: 620px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
     }
   </style>
 </head>
 <body>
+  <main class="page">
     <h1>Sparade Produkter</h1>
     <div id="favoritesContainer"></div>
 
@@ -164,6 +225,7 @@
   </script>
 
     <div id="userBar" style="margin-top:20px;"></div>
+  </main>
 
   <!-- Bottom navigation -->
 

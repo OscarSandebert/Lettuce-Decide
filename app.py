@@ -14,9 +14,10 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-only-change-me")
+DB_PATH = "/var/data/database.db"
 
 def init_db():
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -125,7 +126,11 @@ def lookup(barcode):
         data["name"] = dabas_result.get("Hyllkantstext", "Okänt namn")
         data["brand"] = dabas_result.get("Varumarke", {}).get("Varumarke", "Okänt märke")
         data["raw_ingredients"] = dabas_result.get("Ingrediensforteckning", "Okända ingredienser")
-        data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
+
+        ingredients_res = cleansing.correct_ingredient(data["raw_ingredients"])
+        if isinstance(ingredients_res, dict) and "error" in ingredients_res:
+            return jsonify(ingredients_res), 429
+        data["ingredients"] = ingredients_res
         data["source"] = "DABAS"
 
     if off_result:
@@ -134,6 +139,7 @@ def lookup(barcode):
         
         data["ecoscore_grade"] = env_data.get("ecoscore_grade", "?")
         data["ecoscore_score"] = env_data.get("ecoscore_score", "?")
+        data["co2_total"] = env_data.get("co2_total", "?")
         data["category"] = env_data.get("agribalyse", {}).get("name_en", "?")
         data["source"] = "DABAS + OpenFoodFacts"
 
@@ -142,11 +148,15 @@ def lookup(barcode):
             data["name"] = product.get("product_name", "Okänt namn")
             data["brand"] = product.get("brands", "Okänt märke")
             data["raw_ingredients"] = product.get("ingredients_text", "Okända ingredienser")
-            data["ingredients"] = cleansing.correct_ingredient(data["raw_ingredients"])
 
-    warnings = lookupIngredients.match_ingredients(data["ingredients"])
+            ingredients_res = cleansing.correct_ingredient(data["raw_ingredients"])
+            if isinstance(ingredients_res, dict) and "error" in ingredients_res:
+                return jsonify(ingredients_res), 429
+            data["ingredients"] = ingredients_res
+
+    warnings = lookupIngredients.match_ingredients(data.get("ingredients", []))
     for warning in warnings:
-        msg = f"{warning.get("standard_name")}: {warning.get("risk_reason")}\n"
+        msg = f"{warning.get('standard_name')}: {warning.get('risk_reason')}\n"
         data.setdefault("warnings", []).append(msg)
 
     return jsonify({
@@ -156,6 +166,7 @@ def lookup(barcode):
         "brand": data.get("brand", "Unknown"),
         "ecoscore_grade": data.get("ecoscore_grade", "Unknown"),
         "ecoscore_score": data.get("ecoscore_score", "Unknown"),
+        "co2_total": data.get("co2_total", "Unknown"),
         "category": data.get("category", "Unknown"),
         "warnings": data.get("warnings", [])
     })
@@ -170,7 +181,7 @@ def get_favorites():
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute(
@@ -200,7 +211,7 @@ def add_favorite():
     data = request.get_json()
     barcode = data["barcode"]
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute(
@@ -223,7 +234,7 @@ def remove_favorite(barcode):
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute(

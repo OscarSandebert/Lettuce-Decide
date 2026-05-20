@@ -245,10 +245,14 @@
         margin-bottom: 4px;
       }
 
-      .nav-item.active {
-        color: #0a7;
-        background: transparent;
-      }
+    .nav-item.active {
+      color: #0a7;
+      background: transparent;
+    }
+
+    .nav-item:hover {
+      background: transparent;
+    }
 
       .favorite-btn.active {
         background: #d62828;
@@ -471,7 +475,13 @@
 
         const res = await fetch(`/api/lookup/${barcode}`);
         if (!res.ok) {
-          openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+          if (res.status === 429) {
+            openPopup(
+              `<h2>Tjänsten är upptagen</h2><p>Vår AI tar för tillfället en liten paus på grund av hög belastning. Vänligen försök igen om en stund!</p>`,
+            );
+          } else {
+            openPopup(`<h2>Hittades inte</h2><p>Streckkod: ${barcode}</p>`);
+          }
           resultElement.textContent = null;
           return;
         }
@@ -485,6 +495,16 @@
         } catch (err) {
           console.error(err);
         }
+
+        const hasEnvironmentalData =
+          d.co2_total !== null &&
+          d.co2_total !== undefined &&
+          String(d.co2_total).toLowerCase() !== "unknown" &&
+          d.co2_total !== "?" &&
+          d.ecoscore_grade !== null &&
+          d.ecoscore_grade !== undefined &&
+          String(d.ecoscore_grade).toLowerCase() !== "unknown" &&
+          d.ecoscore_grade !== "?";
 
         const ecoScoreHtml =
           d.source !== "DABAS"
@@ -513,7 +533,7 @@
                   <strong>Miljödata:</strong><br>
                   Kunde inte hitta miljödata för produkten.
                 </p>
-            `
+              `
             : "";
 
         openPopup(`
@@ -612,20 +632,20 @@
     </script>
 
     <nav class="bottom-nav">
-      <button class="nav-item active">
+      <a href="/" class="nav-item active">
         <span>&#127968;</span>
         <small>Hem</small>
-      </button>
+      </a>
 
       <a href="/saved" class="nav-item">
         <span>&#10084;&#65039;</span>
         <small>Sparat</small>
       </a>
 
-      <button class="nav-item">
+      <a href="/info" class="nav-item">
         <span>&#8505;&#65039;</span>
         <small>Info</small>
-      </button>
+      </a>
     </nav>
   </body>
 </html>
