@@ -164,99 +164,186 @@
 <body>
   <main class="page">
     <h1>Sparade Produkter</h1>
+<div class="list-section" style="margin-bottom: 40px;">
+    <h2 style="text-align: left; color: #0a7;">🛒 Min Inköpslista</h2>
+    <div id="groceryContainer"></div>
+</div>
+
+<div class="list-section">
+    <h2 style="text-align: left; color: #d62828;">❤️ Mina Favoriter</h2>
     <div id="favoritesContainer"></div>
+</div>
 
-  <script>
-    const container =
-        document.getElementById("favoritesContainer");
+<script>
 
-    async function loadFavorites() {
+const favoritesContainer =
+    document.getElementById("favoritesContainer");
 
-        container.innerHTML = "";
+const groceryContainer =
+    document.getElementById("groceryContainer");
 
-        try {
+function createProductCard(product, barcode, type) {
 
-            const favoritesRes = await fetch("/api/favorites", {
-                credentials: "include"
-            });
+    const card = document.createElement("div");
 
-            if (!favoritesRes.ok) {
-                container.innerHTML =
-                    "<p>Kunde inte hämta sparade produkter.</p>";
-                return;
-            }
+    card.className = "product-card";
 
-            const favorites = await favoritesRes.json();
+    const deleteFunction =
+        type === "grocery"
+            ? `removeGrocery('${barcode}')`
+            : `removeFavorite('${barcode}')`;
 
-            if (favorites.length === 0) {
-                container.innerHTML =
-                    "<p>Inga sparade produkter.</p>";
-                return;
-            }
+    card.innerHTML = `
+        <h2>${product.name}</h2>
+        <p>${product.brand}</p>
+        <p>Streckkod: ${barcode}</p>
 
-            for (const barcode of favorites) {
+        <button
+            onclick="${deleteFunction}"
+            style="background-color: #e63946;">
+            Ta bort
+        </button>
+    `;
 
-                try {
+    return card;
+}
 
-                    const res = await fetch(
-                        `/api/lookup/${barcode}`
-                    );
+async function loadList(apiUrl, containerElement, type) {
 
-                    if (!res.ok) {
-                        console.error(`Could not load ${barcode}`);
-                        continue;
-                    }
+    containerElement.innerHTML = "";
 
-                    const product = await res.json();
+    try {
 
-                    const card = document.createElement("div");
+        const listRes = await fetch(apiUrl, {
+            credentials: "include"
+        });
 
-                    card.className = "product-card";
+        if (!listRes.ok) {
 
-                    card.innerHTML = `
-                        <h2>${product.name}</h2>
-                        <p>${product.brand}</p>
-                        <p>Streckkod: ${barcode}</p>
+            containerElement.innerHTML =
+                "<p>Kunde inte ladda listan.</p>";
 
-                        <button onclick="removeFavorite('${barcode}')">
-                            Ta bort
-                        </button>
-                    `;
-
-                    container.appendChild(card);
-
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-
-        } catch (err) {
-
-            console.error(err);
-
-            container.innerHTML =
-                "<p>Något gick fel.</p>";
+            return;
         }
+
+        const barcodes = await listRes.json();
+
+        if (barcodes.length === 0) {
+
+            containerElement.innerHTML =
+                "<p>Listan är tom.</p>";
+
+            return;
+        }
+
+        for (const barcode of barcodes) {
+
+            try {
+
+                const productRes =
+                    await fetch(`/api/lookup/${barcode}`);
+
+                if (!productRes.ok) {
+                    console.error(`Could not load ${barcode}`);
+                    continue;
+                }
+
+                const product =
+                    await productRes.json();
+
+                const card =
+                    createProductCard(product, barcode, type);
+
+                containerElement.appendChild(card);
+
+            } catch (err) {
+
+                console.error(
+                    `Kunde inte ladda produkt ${barcode}:`,
+                    err
+                );
+            }
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        containerElement.innerHTML =
+            "<p>Ett fel uppstod.</p>";
     }
+}
 
-    async function removeFavorite(barcode) {
+async function initLists() {
 
-        try {
+    await loadList(
+        "/api/grocery",
+        groceryContainer,
+        "grocery"
+    );
 
-            await fetch(`/api/favorites/${barcode}`, {
+    await loadList(
+        "/api/favorites",
+        favoritesContainer,
+        "favorites"
+    );
+}
+
+async function removeFavorite(barcode) {
+
+    try {
+
+        const res = await fetch(
+            `/api/favorites/${barcode}`,
+            {
                 method: "DELETE",
                 credentials: "include"
-            });
+            }
+        );
 
-            loadFavorites();
-
-        } catch (err) {
-            console.error(err);
+        if (res.ok) {
+            loadList(
+                "/api/favorites",
+                favoritesContainer,
+                "favorites"
+            );
         }
-    }
 
-    loadFavorites();
-    </script>
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+async function removeGrocery(barcode) {
+
+    try {
+
+        const res = await fetch(
+            `/api/grocery/${barcode}`,
+            {
+                method: "DELETE",
+                credentials: "include"
+            }
+        );
+
+        if (res.ok) {
+            loadList(
+                "/api/grocery",
+                groceryContainer,
+                "grocery"
+            );
+        }
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+initLists();
+
+</script>
 
     <div id="userBar" style="margin-top:20px;"></div>
   </main>

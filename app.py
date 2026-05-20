@@ -30,6 +30,14 @@ def init_db():
         )
         """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS grocery_list (
+        user_id TEXT NOT NULL,
+        barcode TEXT NOT NULL,
+        UNIQUE(user_id, barcode)
+    )
+    """)
+
     conn.commit()
     cursor.close()
     conn.close()
@@ -252,6 +260,68 @@ def remove_favorite(barcode):
 
     conn.commit()
     cursor.close()
+    conn.close()
+
+    return jsonify({"success": True})
+
+@app.route("/api/grocery")
+def get_grocery_list():
+    user = session.get("user")
+    if not user:
+        return jsonify([]), 401
+
+    user_id = user["sub"]
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT barcode FROM grocery_list WHERE user_id = ?",
+        (user_id,)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    grocery = [row[0] for row in rows]
+    return jsonify(grocery)
+
+
+@app.route("/api/grocery", methods=["POST"])
+def add_grocery():
+    user = session.get("user")
+    if not user:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user_id = user["sub"]
+    data = request.get_json()
+    barcode = data["barcode"]
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT OR IGNORE INTO grocery_list (user_id, barcode) VALUES (?, ?)",
+        (user_id, barcode)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True})
+
+
+@app.route("/api/grocery/<barcode>", methods=["DELETE"])
+def remove_grocery(barcode):
+    user = session.get("user")
+    if not user:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user_id = user["sub"]
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "DELETE FROM grocery_list WHERE user_id = ? AND barcode = ?",
+        (user_id, barcode)
+    )
+    conn.commit()
     conn.close()
 
     return jsonify({"success": True})
