@@ -272,13 +272,14 @@ def get_grocery_list():
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT barcode FROM grocery_list WHERE user_id = ?",
+        "SELECT barcode FROM grocery_list WHERE user_id = %s",
         (user_id,)
     )
     rows = cursor.fetchall()
+    cursor.close()
     conn.close()
 
     grocery = [row[0] for row in rows]
@@ -295,13 +296,18 @@ def add_grocery():
     data = request.get_json()
     barcode = data["barcode"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT OR IGNORE INTO grocery_list (user_id, barcode) VALUES (?, ?)",
-        (user_id, barcode)
-    )
+            """
+            INSERT INTO grocery_list (user_id, barcode)
+            VALUES (%s, %s)
+            ON CONFLICT DO NOTHING
+            """,
+            (user_id, barcode)
+        )
     conn.commit()
+    cursor.close()
     conn.close()
 
     return jsonify({"success": True})
@@ -315,13 +321,14 @@ def remove_grocery(barcode):
 
     user_id = user["sub"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
-        "DELETE FROM grocery_list WHERE user_id = ? AND barcode = ?",
+        "DELETE FROM grocery_list WHERE user_id = %s AND barcode = %s",
         (user_id, barcode)
     )
     conn.commit()
+    cursor.close()
     conn.close()
 
     return jsonify({"success": True})
