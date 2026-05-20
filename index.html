@@ -408,10 +408,36 @@
         const res = await fetch(`/api/lookup/${barcode}`);
         const d = await res.json();
 
+        let productUrl = "";
+
+        if (d.source === 'DABAS') {
+          productUrl = "https://www.dabas.com/productsheet/0" + barcode;
+        } else {
+          productUrl = "https://world.openfoodfacts.org/product/" + barcode;
+        }
+
+        const name = d.name || "Okänd produkt";
+        const brand = d.brand || "Okänt märke";
+        const ecoscore = (d.ecoscore_grade || "?").toUpperCase();
+          
+        const warningText = d.warnings && d.warnings.length > 0 
+          ? "\n⚠️ Varningar:\n" + d.warnings.map(w => "- " + w.trim()).join("\n") 
+          : "\n✅ Inga varningar identifierade.";
+
+        let ecoText = "";
+        if (d.source !== "DABAS") {
+          ecoText += `\n🌱 CO₂-utsläpp: ${d.co2_total ?? "okänt antal"} kg CO₂-ekvivalenter`;
+          ecoText += `\n🌍 Eco-Score: ${ecoscore}`;
+          
+          if (d.category) {
+            ecoText += `\n📦 Kategori: ${d.category}`;
+          }
+        }
+
+        const infoText = `Kolla in den här produkten via Lettuce Decide!\n\nProdukt: ${name}\nMärke: ${brand}${warningText}${ecoText}\n\nLänk: ${productUrl}`;
+
         const shareData = {
-          title: d.name,
-          text: `Dela produkten: ${d.name} från ${d.brand}`,
-          url: "https://www.dabas.com/productsheet/0" + barcode,
+          text: infoText
         };
 
         try {
@@ -482,21 +508,27 @@
 
         const ecoScoreHtml =
           d.source !== "DABAS"
-            ? hasEnvironmentalData
-              ? `
-                <p>
-                  <strong>Miljödata:</strong><br>
-                  Denna vara släpper ut ${d.co2_total} kg CO₂-ekvivalenter
-                  och har Eco-Score ${(d.ecoscore_grade || "?").toUpperCase()}.
-                </p>
+            
+          ? hasEnvironmentalData
+            ? `
+            <p>
+              <strong>Utsläppt antal CO₂-ekvivalenter:</strong>
+              ${d.co2_total ?? "*okänt antal*"} kg
+            </p>
 
-                ${
-                  d.category && d.category !== "?" && d.category !== "Unknown"
-                    ? `<p><strong>Kategori:</strong> ${d.category}</p>`
-                    : ""
-                }
-              `
-              : `
+            <p>
+              <strong>Eco-Grade (Eco-Score):</strong>
+              ${(d.ecoscore_grade || "?").toUpperCase()}
+              (${d.ecoscore_score ?? "-"})
+            </p>
+
+            ${
+              d.category && d.category !== "?" && d.category !== "Unknown"
+                ? `<p><strong>Kategori:</strong> ${d.category}</p>`
+                : ""
+            }
+            `
+            : `
                 <p>
                   <strong>Miljödata:</strong><br>
                   Kunde inte hitta miljödata för produkten.
